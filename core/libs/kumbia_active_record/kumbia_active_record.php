@@ -997,14 +997,8 @@ class KumbiaActiveRecord
                 $select.= $this->convert_params_to_sql($what);
             }
         } else {
-            if(isset($what['group'])) {
-                $select = "SELECT COUNT(*) FROM (SELECT $table.* FROM $table ";
-                $select.= $this->convert_params_to_sql($what);
-                $select.=') AS t';
-            } else {
-                $select = "SELECT COUNT(*) FROM $table ";
-                $select.= $this->convert_params_to_sql($what);
-            }            
+            $select = "SELECT COUNT(*) FROM $table ";
+            $select.= $this->convert_params_to_sql($what);
         }
         $num = $this->db->fetch_one($select);
         return $num[0];
@@ -1694,7 +1688,7 @@ class KumbiaActiveRecord
                     if (isset($this->$field) && $this->$field !== '' && $this->$field !== NULL) {
                         $fields[] = ActiveRecord::sql_sanizite($field);
 
-                        if (($this->_data_type[$field] == 'datetime' || $this->_data_type[$field] == 'date') && $config['type'] == 'mysql') {
+                        if (($this->_data_type[$field] == 'datetime' OR $this->_data_type[$field] == 'date') && ($config['type'] == 'mysql' OR $config['type'] == 'mysqli')) {
                             $values[] = $this->db->add_quotes(date("Y-m-d G:i:s", strtotime($this->$field)));
                         } elseif ($this->_data_type[$field] == 'date' && $config['type'] == 'oracle') {
                             //Se debe especificar el formato de fecha en Oracle

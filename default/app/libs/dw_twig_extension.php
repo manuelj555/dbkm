@@ -1,0 +1,64 @@
+<?php
+
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ * Description of dw_twig_extension
+ *
+ * @author manuel
+ */
+class DwTwigExtension extends Twig_Extension
+{
+
+    public function getName()
+    {
+        return 'dw_backend_extesion';
+    }
+
+    public function getFunctions()
+    {
+        $safe = array('html', 'js', 'css');
+        return array(
+            'form_*' => new Twig_Function_Method($this, 'form', array('is_safe' => $safe)),
+            'html_*' => new Twig_Function_Method($this, 'html', array('is_safe' => $safe)),
+            'menu' => new Twig_Function_Method($this, 'menu', array('is_safe' => $safe)),
+            'user_*' => new Twig_Function_Method($this, 'user'),
+        );
+    }
+
+    public function getGlobals()
+    {
+        return array(
+        );
+    }
+
+    public function helper($class, $method, $args)
+    {
+        unset($args[0]);
+        return call_user_func_array("{$class}::{$method}", $args);
+    }
+
+    public function form($method)
+    {
+        return $this->helper('DwForm', $method, func_get_args());
+    }
+
+    public function html($method)
+    {
+        return $this->helper('DwHtml', $method, func_get_args());
+    }
+
+    public function menu($entorno)
+    {
+        return DwMenu::load($entorno, Session::get('perfil_id'));
+    }
+
+    public function user($index)
+    {
+        return Session::get($index);
+    }
+
+}

@@ -1,0 +1,87 @@
+{% extends "@templates/backend/login.twig" %}
+
+{% block content %}
+
+<script type="text/javascript">
+    function onSend() {
+        var bValid = true;
+        var tips = $(".dw-validate-tips");
+        var login = $("#login");
+        var pass = $("#password");
+        bValid = bValid && DwCheckLength(tips,login,"El usuario", 3);
+        if (bValid) { login.removeClass('error'); }
+        bValid = bValid && DwCheckLength(tips, pass,"La contraseña", 5);
+        if (bValid) { pass.removeClass('error'); }
+        bValid = bValid && DwCheckRegexp(tips, login,/^([A-ZÑ0-9])+$/i, "El usuario debe tener caracteres alfanuméricos.");
+        if (bValid) { login.removeClass('error'); }
+        bValid = bValid && DwCheckRegexp(tips, pass,/^([A-ZÑ0-9\.\-\#\?\_])+$/i,"La clave debe tener caracteres [A-Z]-[0-9]-[#?.-]");
+        if (bValid) { pass.removeClass('error'); }
+        if (bValid) { login.removeClass('error');pass.removeClass('error');}
+        return bValid;
+    }
+</script>
+
+<div class="account-container">
+
+    <div class="content clearfix">
+
+        {{ form_open('sistema/login/entrar/', '', {class:'no-ajax dw-validate', id:'formulario', 'before-send':'onSend();'}) }}
+
+            {{ form_focus('login') }}
+
+            <noscript><h5 style="text-align: center;">¡Tu navegador no soporta Javascript!.. Activa el uso de Javascript en tu navegador.</h5></noscript>
+
+            <div class="dw-text-center" style="width: 100%; margin: 0 auto;">
+                {{ html_img("upload/empresa/" ~ constant('APP_CLIENT_LOGO'), constant('APP_CLIENT'), {style:'margin-top: 18px; height: 40px;'}) }}
+            </div>
+            
+            <div style="" class="dw-validate-tips"></div>
+
+            <div class="login-fields">
+
+                <p>Ingresa tu usuario y contraseña:</p>
+
+                <div class="field">
+                    <label for="login">Usuario:</label>
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-user"></i></span>
+                        <input type="text" id="login" name="login" value="" placeholder="Usuario" class="login username-field input-xlarge" />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Contraseña:</label>
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-key"></i></span>
+                        <input type="password" id="password" name="password" value="" placeholder="Contraseña" class="login password-field input-xlarge"/>
+                    </div>
+                </div>
+
+                <div>
+                    {{ form_hidden('mode', null, 'auth') }}
+                </div>
+
+                <div>
+                    {{ form_token() }}
+                </div>
+
+            </div>
+
+            <div class="login-actions">
+                <div class="pull-right" style="padding-right: 14px;">
+                    {{ form_submit2('Entrar', {class:'btn btn-primary btn-warning btn-large'}, 'signin') }}
+                </div>
+            </div>
+
+        {{ form_close() }}
+
+    </div>
+
+</div>
+
+<div class="login-extra">
+    Recuperar {{ html_link('#', 'contraseña', {'data-target':'#resetPassword', 'data-toggle':'modal'}) }}
+</div>
+
+{{ DwDialog_alert('Para recuperar tu contraseña puedes contactar al administrador del sistema o contactarnos a través de los siguientes medios: ', 'subtext: E-mail: info@dailyscript.com.co<br />Teléfono: (+57) 316 240 41 83', 'title: Recuperación de contraseña', 'name: resetPassword', 'icon: icon-question-sign') }}
+{% endblock content %}

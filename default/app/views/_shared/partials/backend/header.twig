@@ -1,0 +1,32 @@
+<div class="navbar navbar-fixed-top user-nav">
+    <div class="navbar-inner">
+        <div class="container">
+            {{ html_link('dashboard', html_img("upload/empresa/" ~ constant('APP_CLIENT_LOGO'), constant('APP_NAME'), {'style':'height: 40px;'}), '' , false) }}
+            <button class="btn btn-navbar btn-list-phone" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="pull-right">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i> {{  user_login() }} <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>{{  html_link('sistema/mi_cuenta/', 'Perfil') }}</li>
+                            <li class="divider"></li>
+                            <li>{{  html_link('sistema/login/salir', 'Salir', {'class':'no-load'}, 'icon-off', false) }}</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="hidden-desktop">
+            <div class="nav-collapse nav-list-phone">
+                {{  DwMenu_phone() }}
+            </div>
+        </div><!-- fin contenedor menú-->
+    </div>
+</div>

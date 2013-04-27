@@ -1,0 +1,8 @@
+<footer class="navbar-inner navbar-fixed-bottom">
+    <div class="pull-right hidden-phone">
+        <p>Versión: {{ constant('APP_VERSION') }} - Ip: {{ Session_has('ip') ? Session_get('ip') : DwUtils_getIp()}} - Tiempo: {{ number_format(round((microtime(1)-START_TIME),4),4) }} seg.</p>
+    </div>
+    <div>
+        <p>&copy; Copyright {{ date()|date('Y') }} - {{ DwHtml_outLink('http://www.dailyscript.com.co/', 'Dailyscript', {'target':'_blank'})}}. Todos los derechos reservados. {{ DwHtml_outLink('http://www.dailyscript.com.co/contacto/', 'Contacto', {'target':'_blank'})}}</p>
+    </div>
+</footer>

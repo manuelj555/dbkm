@@ -1,0 +1,62 @@
+{% extends "@templates/backend/default.twig" %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("config/sucursal/agregar/", 'agregar', {'class':'btn-success'}, 'check', constant('APP_AJAX')) }}
+        </div>
+    </div>
+
+    <div class="dw-overflow">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="sucursal">SUCURSAL</th>
+                    <th class="col-collapse" data-search="direccion">DIRECCION</th>
+                    <th class="col-collapse" data-search="ciudad">CIUDAD</th>
+                    <th class="col-collapse" data-search="celular">CELULAR</th>
+                    <th class="col-collapse" data-search="telefono">TELEFONO</th>
+                    <th class="col-collapse" data-search="fax">FAX</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in sucursales.items %}
+                    {% set key_upd = DwSecurity_getKey(item.id, 'upd_sucursal') %}
+                    {% set key_del = DwSecurity_getKey(item.id, 'del_sucursal')%}
+                    <tr>
+                        <td>{{ sucursales.counter }}</td>
+                        <td>{{ item.sucursal }}</td>
+                        <td>{{ item.direccion }}</td>
+                        <td>{{ item.ciudad }}</td>
+                        <td>{{ item.celular }}</td>
+                        <td>{{ item.telefono }}</td>
+                        <td>{{ item.fax }}</td>
+                        <td>
+                            {{ html_buttonTable('Modificar sucursal', "config/sucursal/editar/" ~ key_upd, null, 'info', 'edit') }}
+                            {{ html_buttonTable('Eliminar sucursal', "config/sucursal/eliminar/" ~ key_del, {'class':'js-confirm', 'confirm-title':'Eliminar sucursal', 'confirm-body':'Está seguro de eliminar esta sucursal? <br />Recuerda que esta operación no se puede reversar.'}, 'danger', 'ban-circle') }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    {{ View_partial('paginators/default', false, {'page':sucursales, 'url':"config/sucursal/listar/" ~ order}) }}
+
+{% endblock content %}
+
+{% block javascript %}
+{{ parent() }}
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            order_attr: '{{ constant('APP_AJAX') ? 'class="dw-ajax dw-spinner"' : null }}',
+            order_action: $.KumbiaPHP.publicPath+"config/sucursal/listar/"
+        });
+    });
+</script>
+{% endblock javascript %}
