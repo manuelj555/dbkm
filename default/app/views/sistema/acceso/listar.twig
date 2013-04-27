@@ -1,0 +1,50 @@
+{% extends "@templates/backend/default.twig" %}
+
+{% block content %}
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '{{ PUBLIC_PATH }}sistema/acceso/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '{{ constant('APP_AJAX') ? 'class="dw-ajax dw-spinner"' : '' }}',
+            order_action: "{{ PUBLIC_PATH }}sistema/acceso/listar/"
+        });
+    });
+</script>
+    <div class="dw-overflow">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="fecha">FECHA</th>
+                    <th class="col-collapse">HORA</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="apellido">APELLIDO</th>
+                    <th class="col-collapse" data-search="ip">IP</th>
+                    <th class="col-collapse" data-search="tipo_acceso">TIPO ACCESO</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for acceso in accesos.items %}
+                    <tr>
+                        <td>{{ accesos.counter }}</td>
+                        <td>{{ date(acceso.registrado_at)|date('Y-m-d') }}</td>
+                        <td>{{ date(acceso.registrado_at)|date('H:i:s') }}</td>
+                        <td>{{ acceso.nombre }}</td>
+                        <td>{{ acceso.apellido }}</td>
+                        <td>{{ acceso.ip }}</td>
+                        <td>{% if acceso.tipo_acceso == constant('Acceso::ENTRADA') %}
+                            <span class="label label-success">Entrada</span>
+                            {% else %}
+                            <span class="label label-important">Salida</span>
+                            {% endif %}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    {% include "@partials/paginators/default.twig" with {page: accesos, url: "sistema/acceso/listar/#{order}/"} %}
+{% endblock content %}
