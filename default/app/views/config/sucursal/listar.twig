@@ -1,4 +1,4 @@
-{% extends "@templates/backend/default.twig" %}
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
@@ -45,7 +45,7 @@
 
     </div>
 
-    {{ View_partial('paginators/default', false, {'page':sucursales, 'url':"config/sucursal/listar/" ~ order}) }}
+    {% include '@partials/paginators/default.twig' with {'page':sucursales, 'url': "config/sucursal/listar/" ~ order} %}
 
 {% endblock content %}
 

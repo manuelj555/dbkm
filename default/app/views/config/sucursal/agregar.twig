@@ -1,4 +1,4 @@
-{% extends "@templates/backend/default.twig" %}
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
 {% block content %}
     {{ form_open('', 'post', {'id':'form', 'class':'dw-validate'}) }}

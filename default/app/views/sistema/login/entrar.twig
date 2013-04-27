@@ -1,4 +1,4 @@
-{% extends "@templates/backend/login.twig" %}
+{% extends not is_ajax ? "@templates/backend/login.twig" : "@templates/ajax.twig" %}
 
 {% block content %}
 

@@ -33,6 +33,7 @@ class TwigExtension extends Twig_Extension
             'APP_PATH' => APP_PATH,
             'PUBLIC_PATH' => PUBLIC_PATH,
             'APP_CHARSET' => APP_CHARSET,
+            'is_ajax' => Input::isAjax(),
         );
     }
 

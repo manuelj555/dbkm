@@ -1,8 +1,4 @@
-{% if url is not defined %}
-    {% set url = current_url() %}
-{% else %}
-    {% set url = url|trim('/') %}
-{% endif %}
+{% set url = url|default(current_url())|trim('/') %}
 <div class="row-fluid">
     <div class="span3">
         <div class="pagination" style="height: auto !important; margin-top: 10px;">

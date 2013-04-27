@@ -176,7 +176,7 @@ class View extends KumbiaView
         $twig->addExtension(new TwigExtension());
 
         if (self::$_view) {
-            echo $twig->render(self::$_path . self::$_view . '.twig', self::getVar());
+            $twig->display(self::$_path . self::$_view . '.twig', self::getVar());
         }
     }
 

@@ -138,10 +138,12 @@
                        }
                     });
 
-                });
-                $(function() {
                     $("[rel=tooltip]").tooltip();
+                    
+                    
                 });
+                
+                function DwTitle(title) { if($(document).attr('title') != title) { $(document).attr('title', title); } }
             </script>
             {{  DwDialog_alert('Se ha producido un error en la validación del formulario.', 'subtext: Verifica los datos e intenta nuevamente.', 'title: Formulario incorrecto', 'name: errorForm') }}
             {% if constant('PRODUCTION') %}

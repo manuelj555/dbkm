@@ -1,4 +1,4 @@
-{% extends "config/sucursal/agregar.twig" %}
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
 {% block extra_fields %}
 {{ form_hiddenKey('sucursal.id', sucursal.id) }}

@@ -1,17 +1,7 @@
-{% extends "@templates/backend/default.twig" %}
-
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+{% set paginator_url = paginator_url|default("sistema/acceso/listar/#{order}/") %}
+{% set grid_order_url = grid_order_url|default("sistema/acceso/listar/") %}
 {% block content %}
-<script type="text/javascript">
-    $(function() {
-        $('table').dwGrid({
-            form_search: true,
-            form_action: '{{ PUBLIC_PATH }}sistema/acceso/buscar/',
-            form_load_data : 'dw-shell-content',
-            order_attr: '{{ constant('APP_AJAX') ? 'class="dw-ajax dw-spinner"' : '' }}',
-            order_action: "{{ PUBLIC_PATH }}sistema/acceso/listar/"
-        });
-    });
-</script>
     <div class="dw-overflow">
 
         <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
@@ -46,5 +36,19 @@
         </table>
 
     </div>
-    {% include "@partials/paginators/default.twig" with {page: accesos, url: "sistema/acceso/listar/#{order}/"} %}
+    {% include "@partials/paginators/default.twig" with {page: accesos, url: paginator_url} %}
 {% endblock content %}
+{% block javascript %}
+{{ parent() }}
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            form_search: true,
+            form_action: '{{ PUBLIC_PATH }}sistema/acceso/buscar/',
+            form_load_data : 'dw-shell-content',
+            order_attr: '{{ constant('APP_AJAX') ? 'class="dw-ajax dw-spinner"' : '' }}',
+            order_action: "{{ PUBLIC_PATH ~ grid_order_url }}"
+        });
+    });
+</script>
+{% endblock javascript %}

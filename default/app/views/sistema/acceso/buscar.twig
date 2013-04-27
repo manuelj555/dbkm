@@ -1,0 +1,4 @@
+{% include "sistema/acceso/listar.twig" 
+    with {paginator_url: "sistema/acceso/buscar/#{field}/#{value}/#{order}/",
+          grid_order_url: "sistema/acceso/buscar/#{field}/#{value}/"
+    } %}
