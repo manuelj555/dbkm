@@ -26,6 +26,7 @@ class DwTwigExtension extends Twig_Extension
             'html_*' => new Twig_Function_Method($this, 'html', array('is_safe' => $safe)),
             'menu' => new Twig_Function_Method($this, 'menu', array('is_safe' => $safe)),
             'user_*' => new Twig_Function_Method($this, 'user'),
+            'current_url' => new Twig_Function_Method($this, 'currentUrl'),
         );
     }
 
@@ -61,4 +62,22 @@ class DwTwigExtension extends Twig_Extension
         return Session::get($index);
     }
 
+    public function currentUrl()
+    {
+        extract(Router::get());
+        $url = "$controller/$action";
+        if ($module) {
+            $url = "$module/$url";
+        }
+        if ($parameters) {
+            $params = join('/', $parameters);
+            $params = explode('pag', $params);
+            if ($params[0]) {
+                $url = "$url/" . trim($params[0], '/');
+            }
+        }
+        return trim($url, '/');
+    }
+
 }
+
