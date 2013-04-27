@@ -154,7 +154,7 @@ class View extends KumbiaView
         self::$_content = ob_get_clean();
 
         if (!self::$_view) {
-            return ob_end_flush();
+            echo ob_end_flush();
         }
 
         Twig_Autoloader::register();

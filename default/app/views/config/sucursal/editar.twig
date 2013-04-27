@@ -1,0 +1,5 @@
+{% extends "config/sucursal/agregar.twig" %}
+
+{% block extra_fields %}
+{{ form_hiddenKey('sucursal.id', sucursal.id) }}
+{% endblock extra_fields %}

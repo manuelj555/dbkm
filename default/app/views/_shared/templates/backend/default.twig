@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>{% block head_title '' %}</title>
+        <title>{% block head_title page_title %}
+                {% if constant('APP_CLIENT')%} | {{ constant('APP_CLIENT') ~ ' ‹ ' }}{% endif %}
+                {{ constant('APP_NAME') }}
+        </title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta charset="{{  APP_CHARSET }}">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,7 +35,7 @@
             <div id="dw-shell-content" class="container-fluid">
                 <noscript><h5 style="text-align: center;">¡Tu navegador no soporta Javascript!.. Activa el uso de Javascript en tu navegador.</h5><meta http-equiv="refresh" content="1; URL={{  PUBLIC_PATH }}sistema/login/salir/no-script/" /></noscript>
                 <div class="page-header">
-                    <h4>{% block page_module page_module %} |<small> {% block page_title page_title|split('|')[0] %}</small></h4>
+                    <h4>{% block page_module page_module %} |<small> {% block page_title page_title %}</small></h4>
                 </div>
                 {% include "@partials/dw_message.twig" %}
                 <div class="container-fluid dw-shell-view">

@@ -150,12 +150,10 @@
         </div>
 
     {{ form_close() }}
-
-{{ View_partial('jquery.file-upload') }}
-
 {% endblock content %}
 {% block javascript %}
 {{ parent() }}
+{% include '@partials/jquery.file-upload.twig' %}
 {% if not constant('APP_OFFICE') %}
 <script type="text/javascript">
     var ciudades = {{ ciudades }};

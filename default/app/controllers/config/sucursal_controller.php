@@ -53,6 +53,7 @@ class SucursalController extends BackendController {
         } 
         $this->ciudades = Load::model('params/ciudad')->getCiudadesToJson();
         $this->page_title = 'Agregar sucursal';
+        $this->sucursal = array();
     }
     
     /**
