@@ -1,0 +1,66 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block content %}
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="no-responsive dw-text-middle">NUM</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">TABLE</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">COMMENTS</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">ENGINE</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">A. INCREMENT</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">~ROWS</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">DATA LENGTH</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">DATA FREE</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">MSG TYPE</th>
+                    <th rowspan="2" class="no-responsive col-collapse dw-text-middle">MSG TEXT</th>
+                    <th colspan="4" class="no-responsive dw-text-center" style="width: 150px;">ACCIONES</th>
+                </tr>
+                <tr>
+                    <th class="no-responsive">Optimizar</th>
+                    <th class="no-responsive">Desfragm.</th>
+                    <th class="no-responsive">V. Caché</th>
+                    <th class="no-responsive">Reparar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tabla in tablas %}
+                    {% set key_optim = DwSecurity_getKey(tabla.Name, 'optimizar') %}
+                    {% set key_desfr = DwSecurity_getKey(tabla.Name, 'desfragmentar') %}
+                    {% set key_cache = DwSecurity_getKey(tabla.Name, 'cache') %}
+                    {% set key_repar = DwSecurity_getKey(tabla.Name, 'reparar') %}
+                    <tr>
+                        <td></td>
+                        <td>{{ tabla.Name|replace({'_':' '})|title }}</td>
+                        <td>
+                            {% set comment = tabla.Comment|split(';')[0] %}
+                            {% if 'INNODB' in comment|upper or 'MYISAM' in comment|upper %}
+                                {{ comment }}
+                            {% endif %}
+                        </td>
+                        <td>{{ tabla.Engine }}</td>
+                        <td>{{ tabla.Auto_increment }}</td>
+                        <td>{{ tabla.Rows }}</td>
+                        <td>{{ tabla.Data_length }}</td>
+                        <td>{{ tabla.Data_free }}</td>
+                        <td>{{ tabla.Msg_type }}</td>
+                        <td><span class="label label-{{tabla.Msg_text=='OK'?'success':'mportant'}}">{{ tabla.Msg_text }}</span></td>
+                        <td class="dw-text-center">
+                            {{ html_buttonTable('Optimizar tabla', "sistema/mantenimiento/optimizar/#{key_optim}/", null, 'success', 'magic', true) }}
+                        </td>
+                        <td class="dw-text-center">
+                            {{ html_buttonTable('Desfragmentar tabla', "sistema/mantenimiento/desfragmentar/#{key_desfr}/", null, 'info', 'magnet', true) }}
+                        </td>
+                        <td class="dw-text-center">
+                            {{ html_buttonTable('Vaciar caché', "sistema/mantenimiento/cache/#{key_cache}/", null, 'warning', 'filter', true) }}
+                        </td>
+                        <td class="dw-text-center">
+                            {{ html_buttonTable('Reparar tabla', "sistema/mantenimiento/reparar/#{key_repar}/", null, 'danger', 'warning-sign', true) }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock content %}

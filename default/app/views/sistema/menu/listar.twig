@@ -1,0 +1,65 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% import 'macros.twig' as macros %}
+
+{% block javascript %}
+{{ parent() }}
+{{ macros.dwGrid(null, "sistema/menu/listar/") }}
+{% endblock javascript %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/menu/agregar/", 'agregar', {'class':'btn-success'}, 'check', constant('APP_AJAX')) }}
+        </div>
+    </div>
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="posicion">POSICION</th>
+                    <th class="col-collapse" data-search="padre">PADRE</th>
+                    <th class="col-collapse" data-search="menu">TITULO</th>
+                    <th class="col-collapse" data-search="recurso">RECURSO</th>
+                    <th class="col-collapse" data-search="url">URL</th>
+                    <th class="col-collapse">ICONO</th>
+                    <th class="col-collapse" data-search="visibilidad">VISIBILIDAD</th>
+                    <th class="col-collapse" data-search="activo">ESTADO</th>
+                    <th class="btn-actions no-responsive">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus.items %}
+                    {% if constant('APP_OFFICE') or menu.id != constant('Menu::SUCURSAL') %}
+                        <tr>
+                            <td></td>
+                            <td>{{ menu.posicion }}</td>
+                            <td>{{ menu.padre }}</td>
+                            <td>{{ menu.menu }}</td>
+                            <td>{{ menu.recurso }}</td>
+                            <td>{{ menu.url }}</td>
+                            <td>{{ menu.icono }}</td>
+                            <td>{% if menu.visibilidad == constant('Menu::BACKEND') %}
+                                <span class="label label-success">Backend</span>
+                                {% else %}<span class="label label-warning">Frontend</span>{% endif %}</td>
+                            <td>{% if menu.activo == constant('Menu::ACTIVO') %}
+                                <span class="label label-success">Activo</span>
+                                {% else %}<span class="label label-important">Bloqueado</span>{% endif %}</td>
+                            <td>
+                                {{ html_buttonTable('Modificar menú', "sistema/menu/editar/#{security_key(menu.id,'upd_menu')}/", null, 'info', 'edit') }}
+                                {% if menu.activo == constant('Menu::ACTIVO') %}
+                                    {{ html_buttonTable('Bloquear menú', "sistema/menu/estado/inactivar/#{security_key(menu.id,'inactivar_menu')}/", null, 'success', 'flag') }}
+                                {% else %}
+                                    {{ html_buttonTable('Reactivar menú', "sistema/menu/estado/reactivar/#{security_key(menu.id,'reactivar_menu')}/", null, 'danger', 'flag') }}
+                                {% endif %}
+                                {{ html_buttonTable('Eliminar menú', "sistema/menu/eliminar/#{security_key(menu.id,'eliminar_menu')}/", {'class':'js-confirm', 'confirm-title':'Eliminar menú', 'confirm-body':'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'}, 'danger', 'ban-circle') }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{{ macros.paginator(menus, "sistema/menu/listar/#{order}/") }}
+{% endblock content %}

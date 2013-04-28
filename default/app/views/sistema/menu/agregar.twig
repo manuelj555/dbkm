@@ -1,0 +1,55 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% import 'macros.twig' as macros %}
+
+{% block content %}
+    {{ form_open('', 'post', {id:'form',class:'dw-validate'}) }}
+        <div class="row-fluid">
+            <div class="span4">
+                {{ form_text('menu.menu', {class:'input-required mask-alphanum show-error'}, null, 'Título') }}
+            </div>
+            <div class="span4">
+                {{ form_dbSelect('menu.menu_id', 'menu', ['sistema/menu', 'getListadoMenu', constant('Menu::ACTIVO')], 'Ninguno', {class:'mask-pint show-errors'}, null, 'Menú padre') }}
+            </div>
+            <div class="span4">
+                {{ form_dbSelect('menu.recurso_id', 'recurso', ['sistema/recurso', 'getListadoRecurso', constant('Recurso::ACTIVO')], 'Ninguno', {class:'mask-pint show-errors'}, null, 'Recurso') }}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+                {{ form_text('menu.posicion', {class:'mask-pint show-error'}, null, 'Posición') }}
+            </div>
+            <div class="span4">
+                {{ form_text('menu.icono', {class:'mask-alphanum show-error'}, null, 'Icono a mostrar') }}
+            </div>
+            <div class="span4">
+                {{ form_text('menu.url', {class:'show-error'}, null, 'URL') }}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span4">
+                {{ form_select('menu.visibilidad', {(constant('Menu::BACKEND')):'Backend', (constant('Menu::FRONTEND')):'Frontend'}, {class:'required show-errors'}, constant('Menu::BACKEND'), 'Visibilidad') }}
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="form-actions">
+                {{ DwButton_save('Guardar menú') }}
+                {{ DwButton_reset('form') }}
+                {{ DwButton_cancel('sistema/menu/listar/') }}
+            </div>
+        </div>
+        {% block extra_fields '' %}
+    {{ form_close() }}
+{% endblock content %}
+    
+{% block javascript %}
+{{ parent() }}
+<script type="text/javascript" >
+    $(function(){
+        $("#menu_recurso_id").on('change',function(){
+            var recurso = $('option:selected',this).text();
+            $("#menu_url").val(recurso.replace('/*','/'));
+        });
+    });
+</script>
+{% endblock javascript %}
