@@ -55,6 +55,7 @@ class MiCuentaController extends BackendController {
                         }
                         $usuario->perfil = $perfil;
                         $usuario->fotografia = $persona->fotografia;
+                        $usuario->getInformacionUsuario(Session::get('id'));
                     }
                 } else {
                     ActiveRecord::rollbackTrans();

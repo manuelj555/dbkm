@@ -1,0 +1,48 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ DwButton_report("auditoria/listar/$fecha/", 'html', 'Reporte de auditorías', 'imprimir') }}
+        </div>
+    </div>
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th class="no-responsive dw-text-middle" style="width: 15px;">NUM</th>
+                    <th class="no-responsive dw-text-middle">FECHA</th>
+                    <th class="no-responsive dw-text-middle">TIPO</th>
+                    <th class="no-responsive dw-text-middle">USUARIO</th>
+                    <th class="no-responsive dw-text-middle">IP</th>
+                    <th class="no-responsive dw-text-center">DESCRIPCION</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in audits.items %}
+                    <tr>
+                        <td>{{ audits.counter }}</td>
+                        <td>{{ item.fecha }}</td>
+                        <td>
+                            {% if item.tipo in ['ERROR','ALERT'] %}
+                                <span class="label label-important">{{ item.tipo }}</span>
+                            {% elseif item.tipo in ['WARNING','CRITICAL','EMERGENCE'] %}
+                                <span class="label label-warning">{{ item.tipo }}</span>
+                            {% elseif item.tipo in ['NOTICE','INFO'] %}
+                                <span class="label label-info">{{ item.tipo }}</span>
+                            {% else %}
+                                <span class="label">{{ item.tipo }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.usuario }}</td>
+                        <td>{{ item.ip }}</td>
+                        <td>{{ item.descripcion }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+{% include "@partials/paginators/default.twig" with {page: audits, url: "sistema/auditoria/listar/#{fecha}/"} %}
+{% endblock content %}
