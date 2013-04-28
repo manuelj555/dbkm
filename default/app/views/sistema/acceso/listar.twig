@@ -20,8 +20,8 @@
                 {% for acceso in accesos.items %}
                     <tr>
                         <td>{{ accesos.counter }}</td>
-                        <td>{{ date(acceso.registrado_at)|date('Y-m-d') }}</td>
-                        <td>{{ date(acceso.registrado_at)|date('H:i:s') }}</td>
+                        <td>{{ acceso.registrado_at|date('Y-m-d') }}</td>
+                        <td>{{ acceso.registrado_at|date('H:i:s') }}</td>
                         <td>{{ acceso.nombre }}</td>
                         <td>{{ acceso.apellido }}</td>
                         <td>{{ acceso.ip }}</td>
