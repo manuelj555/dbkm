@@ -179,6 +179,7 @@ class View extends KumbiaView
             $twig = new Twig_Environment($loader, array(
                 'cache' => APP_PATH . 'temp/cache/twig',
                 'debug' => !PRODUCTION,
+                'strict_variables' => true,
             ));
 
             $twig->addExtension(new Twig_Extension_Debug());
