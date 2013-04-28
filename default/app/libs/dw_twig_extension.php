@@ -27,6 +27,7 @@ class DwTwigExtension extends Twig_Extension
             'menu' => new Twig_Function_Method($this, 'menu', array('is_safe' => $safe)),
             'user_*' => new Twig_Function_Method($this, 'user'),
             'current_url' => new Twig_Function_Method($this, 'currentUrl'),
+            'security_key' => new Twig_Function_Function("DwSecurity::getKey", array('is_safe' => $safe)),
         );
     }
 
