@@ -122,9 +122,10 @@ class Perfil extends ActiveRecord {
                 return 'cancel';
             }
         }
+        $path_twig = APP_PATH.'views/_shared/templates/backend/'.$this->plantilla.'.twig';
         $path = APP_PATH.'views/_shared/templates/backend/'.$this->plantilla.'.phtml';
         //Verifico si se encuentra el template
-        if(!is_file($path)) {
+        if(!is_file($path_twig) && !is_file($path)) {
             DwMessage::error('Lo sentimos, pero no hemos podidio ubicar la plantilla '.$this->plantilla); 
             return 'cancel';
         }
