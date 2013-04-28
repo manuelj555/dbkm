@@ -1,5 +1,7 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
+{% import 'macros.twig' as macros %}
+
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
         <div class="btn-actions">
@@ -46,7 +48,9 @@
         </table>
 
     </div>
-{% include "@partials/paginators/default.twig" with {page: backups, url: "sistema/backup/listar/#{order}/"} %}
+{% block paginator %}
+{{ macros.paginator(backups, "sistema/backup/listar/#{order}/") }}
+{% endblock paginator %}
 </div>
 
     <div class="modal hide" id="form-add-bakcup">
@@ -74,17 +78,10 @@
 
 {% block javascript %}
 {{ parent() }}
+{% block dw_grid %}
+{{ macros.dwGrid('sistema/backup/buscar/', "sistema/backup/listar/") }}
+{% endblock dw_grid %}
 <script type="text/javascript">
-    $(function() {
-        $('table').dwGrid({
-            form_search: true,
-            form_action: '{{ PUBLIC_PATH }}sistema/backup/buscar/',
-            form_load_data : 'dw-shell-content',
-            order_attr: "{{ constant('APP_AJAX')?'class=\'dw-ajax dw-spinner\'':null}}",
-            order_action: $.KumbiaPHP.publicPath+"sistema/backup/listar/"
-        });
-    });
-    
     function backupRestore(refer) {
         $("#form-modal").attr('action', refer.attr('href'));
         $("#password").val('');
