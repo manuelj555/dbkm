@@ -1,0 +1,95 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% import 'sistema/configuracion/macros.twig' as config_macros %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/configuracion/", 'basic', {'class':'btn-success'}, 'asterisk', constant('APP_AJAX'))}}
+            {{ html_button("sistema/configuracion/routes/", 'routes', {'class':'btn-warning'}, 'random', constant('APP_AJAX'))}}
+            {{ html_button("sistema/configuracion/databases/", 'databases', {'class':'btn-warning active'}, 'hdd', constant('APP_AJAX'))}}
+            <div class="pull-right">
+                {{ html_button("sistema/configuracion/reset/", 'reset', {'class':'btn-danger js-confirm', 'confirm-title':'Restarurar archivos de configuración', 'confirm-body':'Está seguro de querer restastaurar los archivos de configuración? <br />Recuerda que esta operación no se puede reversar.'}, 'warning-sign', constant('APP_AJAX'))}}
+            </div>
+        </div>
+    </div>
+
+    {{ form_open('', 'post', {'id':'form', 'class':'dw-validate', 'style-form':'form-horizontal'})}}
+
+        <div class="row-fluid">
+
+            <div class="span1">&nbsp;</div>
+
+            <div class="span4">
+                {{ form_fieldset('Configuración en desarrollo')}}
+                    {{ form_text('development.host', {'class':'input-required show-error'}, databases['development']['host'], 'Dirección del servidor:', 'Ej: localhost')}}
+                    {{ form_text('development.username', {'class':'input-required show-error'}, databases['development']['username'], 'Usuario:', 'Ej: usuario')}}
+                    {{ form_text('development.password', null, databases['development']['password'], 'Contraseña:', 'Ej: clave')}}
+                    {{ form_text('development.name', {'class':'input-required show-error'}, databases['development']['name'], 'Base de datos:', 'Ej: dailyscript')}}
+                {{ form_fieldset()}}
+            </div>
+
+            <div class="span1">&nbsp;</div>
+
+            <div class="span4">
+                {{ form_fieldset('Configuración en producción')}}
+                    {{ form_text('production.host', {'class':'input-required show-error'}, databases['production']['host'], 'Dirección del servidor:', 'Ej: dbhost87965 - 25.25.25.9')}}
+                    {{ form_text('production.username', {'class':'input-required show-error'}, databases['production']['username'], 'Usuario:', 'Ej: dbuser8495')}}
+                    {{ form_text('production.password', null, databases['production']['password'], 'Contraseña:', 'Ej: m1.c7av3')}}
+                    {{ form_text('production.name', {'class':'input-required show-error'}, databases['production']['name'], 'Base de datos:', 'Ej: dailyscript')}}
+                {{ form_fieldset()}}
+            </div>
+
+        </div>
+
+        <div class="row-fluid">
+            <div class="form-actions">
+                {{ html_button('#', 'TEST', {'class':'no-ajax  btn-primary', 'id':'btn-test'}, 'ok', false)}}
+                {#{ html_button("Verificar configuración", {'class':'btn', 'id':'btn-test'})}#}
+                {{ DwButton_submit('Guardar configuración', 'check') }}
+                {{ DwButton_cancel()}}
+            </div>
+        </div>
+
+
+    {{ form_close()}}
+{% endblock content %}
+
+{% block javascript %}
+{{ parent() }}
+<script type="text/javascript">
+    $(function(){
+        {{ config_macros.js_modal() }}
+    });
+    $("#btn-test").on('click', function () {
+        var form = $("#form");
+        $.post('{{ PUBLIC_PATH}}sistema/configuracion/test/', form.serialize(), function(data, status) {
+            $('#dw-message').html(data).hide().show('slow');
+        });
+        return false;
+    });
+</script>
+<!-- Imprimimos el modal justo antes del Body -->
+{{ form_open('', '', {'id':'form-modal', 'class':'dw-validate', 'style':'form-horizontal'})}}
+    <div class="modal hide" id="form-add-config">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Agregar variable de configuración</h3>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="span5">
+                    {{ form_text('variable', {'class':'input-required show-error'}, null, 'Nombre de la variable')}}
+                </div>
+                <div class="span5">
+                    {{ form_text('valor', {'class':'input-required show-error'}, null, 'Valor')}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+            {{ form_submit("Crear", {'class':'btn btn-primary'})}}
+        </div>
+    </div>
+{{ form_close()}}
+{% endblock javascript %}

@@ -1,0 +1,70 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% import 'sistema/configuracion/macros.twig' as config_macros %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/configuracion/config/", 'config', {'class':'btn-success'}, 'asterisk', constant('APP_AJAX')) }}
+            {{ html_button("sistema/configuracion/routes/", 'routes', {'class':'btn-warning'}, 'random', constant('APP_AJAX')) }}
+            {{ html_button("sistema/configuracion/databases/", 'databases', {'class':'btn-warning'}, 'hdd', constant('APP_AJAX')) }}
+            <!--
+            <div class="pull-right">
+                { { html_button("sistema/configuracion/reset/", 'reset', {'class':'btn-danger js-confirm', 'confirm-title':'Restarurar archivos de configuración', 'confirm-body':'Está seguro de querer restastaurar los archivos de configuración? <br />Recuerda que esta operación no se puede reversar.'}, 'warning-sign', constant('APP_AJAX')')) }}
+            </div>
+            -->
+        </div>
+    </div>
+
+    {{ form_open('', 'post', {'id':'form', 'class':'dw-validate', 'style-form':'form-horizontal'}) }}
+
+        <div class="row-fluid">
+            <div class="span1">&nbsp;</div>
+
+            <div class="span4">
+
+                {{ form_fieldset("Configuración básica") }}
+
+                    {{ form_text('application.name', {'class':'input-required show-error'}, config['application']['name'], 'Nombre del proyecto:') }}
+
+                    {{ form_text('application.timezone', {'class':'input-required show-error'}, config['application']['timezone'], 'Timezone:') }}
+
+                    {{ form_select('application.production', {'Off':'No', 'On':'Si'}, {'class':'input-required show-error'}, config['application']['production'], 'Proyecto en producción:') }}
+
+                    {{ form_select('application.database', {'development':'Development', 'production':'Production'}, {'class':'input-required show-error'}, config['application']['database'], 'Entorno de conexión:') }}
+
+                {{ form_fieldset() }}
+
+            </div>
+
+            <div class="span1">&nbsp;</div>
+
+            <div class="span4">
+                {#{ form_fieldset("<a id='add-config' href='#form-add-config' class='btn' data-toggle='modal'><i class='icon-ok icon-expand'></i>Agregar configuración</a>") }#}
+                {{ form_fieldset("Configuración personalizada") }}
+                {% if config.custom is defined %}
+                    {% for campo, valor in config.custom %}
+                        {% if campo not in ['app_logger','app_oficce','pag_main','pag_med','pag_max','pag_ext'] %}
+                            {{ config_macros.customConfig(valor, campo) }}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                <div id="append-config"></div>
+                <p>Los campos creados se definirán automáticamente al cargar el aplicativo y se almacenarán en el config.ini</p>
+                <p>Para eliminar una variable puede colocar el valor "delete-var" en el input.</p>
+
+                {{ form_fieldset() }}
+
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div class="form-actions">
+                {{ DwButton_submit('Guardar configuración', 'check') }}
+                {{ DwButton_cancel() }}
+            </div>
+        </div>
+
+
+    {{ form_close() }}
+{% endblock content %}

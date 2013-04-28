@@ -1,0 +1,44 @@
+{% macro showText(index) %}
+{% set textos = {
+    'app_update':     'Sistema en mantenimiento',
+    'app_update_time':'Tiempo de la mantenimiento',
+    'app_version':    'Versión de la aplicación',
+    'app_logger':     'Generar logs de la base de datos',
+    'app_office':     'Manejo de sucursales de la empresa',
+    'app_ajax':       'Cargar con AJAX',
+    'app_local':      'La aplicación se encuentra en el localhost',
+    'login_exclusion':'Nombre de usuarios excluidos',
+    'datagrid':       'Cantidad de datos por página en los reportes',
+} %}
+{{ textos[index] is defined ? textos[index] : index }}
+{% endmacro %}
+
+{% macro customConfig(valor, index) %}
+    {% set text = _self.showText(index)|title %}
+    {% if valor in ['On', 'Off'] %}
+        {{ form_select("custom."~index, {'Off':'No', 'On':'Si'}, {'class':'input-required show-error'}, valor, text) }}
+    {% else %}
+        {{ form_text("custom."~index, {'class':'input-required show-error'}, valor, text) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro js_modal(prefix) %}
+{% set prefix = prefix|default('custom') %}
+$("#form-modal").submit(function(){
+    if(validForm($(this).attr('name'), false)) {
+        variable = $('#variable');
+        valor = $("#valor");
+        $('<div class="control-group">'+
+        '<label for="{{ prefix }}_'+variable.val()+'" class="control-label">'+variable.val()+':<span class="req">*</span></label>'+
+        '<div class="controls">'+
+        '<input id="{{ prefix }}_'+variable.val()+'" class="field text input-required show-errors" type="text" value="'+valor.val()+'" name="{{ prefix }}['+variable.val()+']">'+
+        '<p class="help-block"> </p>'+
+        '</div></div>').appendTo('#append-config');
+        variable.attr('value', '');
+        valor.attr('value', '');
+        DwSpinner('hide');
+        $("#form-add-config").modal('hide');
+    }
+    return false;
+});
+{% endmacro %}
