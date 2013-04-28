@@ -1,0 +1,51 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block javascript %}
+{{ parent() }}
+{{ macros.dwGrid(null, "sistema/perfil/listar/") }}
+{% endblock javascript %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/perfil/agregar/", 'agregar', {'class':'btn-success'}, 'check', constant('APP_AJAX')) }}
+        </div>
+    </div>
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="perfil">PERFIL</th>
+                    <th class="col-collapse" data-search="plantilla">PLANTILLA</th>
+                    <th class="col-collapse" data-search="usuarios">USUARIOS</th>
+                    <th class="col-collapse" data-search="estado">ESTADO</th>
+                    <th class="btn-actions no-responsive">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for perfil in perfiles.items %}
+                    <tr>
+                        <td></td>
+                        <td>{{ perfil.perfil }}</td>
+                        <td>{{ perfil.plantilla }}</td>
+                        <td>{{ perfil.usuarios }}</td>
+                        <td>{% if perfil.estado == constant('Perfil::ACTIVO') %}
+                            <span class="label label-success">Activo</span>
+                            {% else %}<span class="label label-important">Bloqueado</span>{% endif %}</td>
+                        <td>
+                            {{ html_buttonTable('Ver perfil', "sistema/perfil/ver/#{security_key(perfil.id, 'show_perfil')}/", null, 'info', 'search') }}
+                            {{ html_buttonTable('Modificar perfil', "sistema/perfil/editar/#{security_key(perfil.id, 'upd_perfil')}/", null, 'info', 'edit') }}
+                            {% if perfil.estado == constant('Perfil::ACTIVO') %}
+                                {{ html_buttonTable('Inactivar perfil', "sistema/perfil/estado/inactivar/#{security_key(perfil.id, 'inactivar_perfil')}/", null, 'success', 'flag') }}
+                            {% else %}
+                                {{ html_buttonTable('Reactivar perfil', "sistema/perfil/estado/reactivar/#{security_key(perfil.id, 'reactivar_perfil')}/", null, 'danger', 'flag') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{{ macros.paginator(perfiles, "sistema/perfil/listar/#{order}/") }}
+{% endblock content %}

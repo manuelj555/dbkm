@@ -1,0 +1,5 @@
+{% extends "sistema/perfil/agregar.twig" %}
+
+{% block extra_fields %}
+{{ form_hiddenKey('perfil.id', perfil.id) }}
+{% endblock extra_fields %}
