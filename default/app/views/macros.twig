@@ -1,0 +1,19 @@
+{% macro paginator(page, url) %}
+    {% include "@partials/paginators/default.twig" with {page: page, url: url|default(null)} %}
+{% endmacro %}
+
+{% macro dwGrid(form_action, order_action) %}
+<script type="text/javascript">
+    $(function() {
+        $('table').dwGrid({
+            {% if form_action %}
+                form_search: true,
+                form_action: '{{ PUBLIC_PATH ~ form_action }}',
+                form_load_data : 'dw-shell-content',
+            {% endif %}
+            order_attr: "{{ constant('APP_AJAX')?'class=\'dw-ajax dw-spinner\'':null}}",
+            order_action: '{{ PUBLIC_PATH ~ order_action }}'
+        });
+    });
+</script>
+{% endmacro %}
