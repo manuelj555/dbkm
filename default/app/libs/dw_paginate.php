@@ -104,7 +104,7 @@ class DwPaginate {
         $page->counter = ($total_items >= $counter) ? $counter : 1;
         $page->size = $total_items;
         $page->per_page = $per_page;
-        
+
         return $page;        
     }
 

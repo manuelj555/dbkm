@@ -1,4 +1,5 @@
 {% set url = url|default(current_url())|trim('/') %}
+{% if page is not null %}
 {% spaceless %}
 <div class="row-fluid">
     <div class="span3">
@@ -32,3 +33,4 @@
     </div>
 </div>
 {% endspaceless %}
+{% endif %}

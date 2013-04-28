@@ -3,7 +3,6 @@
 {% set grid_order_url = grid_order_url|default("sistema/acceso/listar/") %}
 {% block content %}
     <div class="dw-overflow">
-
         <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
             <thead>
                 <tr>
@@ -17,21 +16,23 @@
                 </tr>
             </thead>
             <tbody>
-                {% for acceso in accesos.items %}
-                    <tr>
-                        <td>{{ accesos.counter }}</td>
-                        <td>{{ acceso.registrado_at|date('Y-m-d') }}</td>
-                        <td>{{ acceso.registrado_at|date('H:i:s') }}</td>
-                        <td>{{ acceso.nombre }}</td>
-                        <td>{{ acceso.apellido }}</td>
-                        <td>{{ acceso.ip }}</td>
-                        <td>{% if acceso.tipo_acceso == constant('Acceso::ENTRADA') %}
-                            <span class="label label-success">Entrada</span>
-                            {% else %}
-                            <span class="label label-important">Salida</span>
-                            {% endif %}</td>
-                    </tr>
-                {% endfor %}
+                {% if accesos.items is defined %}
+                    {% for acceso in accesos.items %}
+                        <tr>
+                            <td>{{ accesos.counter }}</td>
+                            <td>{{ acceso.registrado_at|date('Y-m-d') }}</td>
+                            <td>{{ acceso.registrado_at|date('H:i:s') }}</td>
+                            <td>{{ acceso.nombre }}</td>
+                            <td>{{ acceso.apellido }}</td>
+                            <td>{{ acceso.ip }}</td>
+                            <td>{% if acceso.tipo_acceso == constant('Acceso::ENTRADA') %}
+                                <span class="label label-success">Entrada</span>
+                                {% else %}
+                                <span class="label label-important">Salida</span>
+                                {% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
 

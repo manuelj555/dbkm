@@ -24,24 +24,26 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in backups.items %}
-                    {% set key_res = DwSecurity_getKey(item.id, 'restaurar_backup') %}
-                    {% set key_dwn = DwSecurity_getKey(item.id, 'descargar_backup') %}
-                    <tr data-backup-description="{{ item.denominacion }}" data-backup-file="{{ item.archivo }}" data-backup-datetime="{{ item.registrado_at }}">
-                        <td>{{ backups.counter }}</td>
-                        <td>{{ item.registrado_at|date("Y-m-d") }}</td>
-                        <td>{{ item.registrado_at|date("H:i:s") }}</td>
-                        <td>{{ item.denominacion }}</td>
-                        <td>{{ item.nombre }}</td>
-                        <td>{{ item.apellido }}</td>
-                        <td>{{ item.tamano }}</td>
-                        <td>{{ item.archivo }}</td>
-                        <td>
-                            {{ html_buttonTable('Restarurar sistema', "sistema/backup/restaurar/#{key_res}/", {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}, 'danger', 'warning-sign') }}
-                            {{ html_buttonTable('Descargar backup', "sistema/backup/descargar/#{key_dwn}/", {'class':'no-ajax', 'target':'_blank'}, 'info', 'download-alt') }}
-                        </td>
-                    </tr>
-                {% endfor %}
+                {% if backups.items is defined %}
+                    {% for item in backups.items %}
+                        {% set key_res = DwSecurity_getKey(item.id, 'restaurar_backup') %}
+                        {% set key_dwn = DwSecurity_getKey(item.id, 'descargar_backup') %}
+                        <tr data-backup-description="{{ item.denominacion }}" data-backup-file="{{ item.archivo }}" data-backup-datetime="{{ item.registrado_at }}">
+                            <td>{{ backups.counter }}</td>
+                            <td>{{ item.registrado_at|date("Y-m-d") }}</td>
+                            <td>{{ item.registrado_at|date("H:i:s") }}</td>
+                            <td>{{ item.denominacion }}</td>
+                            <td>{{ item.nombre }}</td>
+                            <td>{{ item.apellido }}</td>
+                            <td>{{ item.tamano }}</td>
+                            <td>{{ item.archivo }}</td>
+                            <td>
+                                {{ html_buttonTable('Restarurar sistema', "sistema/backup/restaurar/#{key_res}/", {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}, 'danger', 'warning-sign') }}
+                                {{ html_buttonTable('Descargar backup', "sistema/backup/descargar/#{key_dwn}/", {'class':'no-ajax', 'target':'_blank'}, 'info', 'download-alt') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
             </tbody>
         </table>
 

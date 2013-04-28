@@ -73,7 +73,7 @@ class Perfil extends ActiveRecord {
             )
         ));
         $group = 'perfil.id';
-        if($page) {            
+        if($page) {
             return $this->paginated("columns: $columns", "join: $join", "conditions: $conditions", "group: $group", "order: $order", "page: $page");
         }
         return $this->find("columns: $columns", "join: $join", "conditions: $conditions", "group: $group", "order: $order");
