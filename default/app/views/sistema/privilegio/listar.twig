@@ -1,0 +1,62 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block javascript %}
+{{ parent() }}
+{{ macros.dwGrid(null, "sistema/privilegio/listar/") }}
+{% endblock javascript %}
+
+{% set old_privilegios = [] %}
+
+{% block content %}
+    {{ form_open('', 'post', {id:'form',class:'dw-validate'}) }}
+        <div class="dw-overflow">
+            <table class="table table-bordered table-hover table-striped table-condensed">
+                <thead>
+                    <tr>
+                        <th rowspan="2" class="no-responsive dw-text-middle">RECURSO</th>
+                        <th rowspan="2" class="no-responsive col-collapse dw-text-middle">DESCRIPCION</th>
+                        <th colspan="{{ perfiles|length }}"class="no-responsive dw-text-center">PERFILES</th>
+                    </tr>
+                    <tr>
+                        {% for perfil in perfiles %}
+                        <th class="no-responsive dw-text-center">{{ perfil.perfil|title }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recurso in recursos.items %}
+                    <tr>
+                        <td>{{ recurso.recurso }}</td>
+                        <td>{{ recurso.descripcion }}</td>
+                        {% for perfil in perfiles %}
+                            {% set recurso_perfil = recurso.id~'-'~perfil.id %}
+                            {% if recurso_perfil in privilegios %}
+                                <td>
+                                    {% set old_privilegios = old_privilegios|merge([recurso_perfil]) %}
+                                    {{ form_check('privilegios[]',recurso_perfil, null, true) }}
+                                </td>
+                            {% else %}
+                                <td>
+                                    {{ form_check('privilegios[]',recurso_perfil) }}
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {{ form_hidden('old_privilegios', null, old_privilegios|join(',')) }}
+        <div class="row-fluid">
+            <div class="form-actions">
+                {{ DwButton_save('Guardar privilegios') }}
+                {{ DwButton_cancel('sistema/privilegio/listar') }}
+            </div>
+        </div>
+
+    {{ form_close() }}
+{{ macros.paginator(recursos, "sistema/privilegio/listar/#{order}/") }}
+{% endblock content %}
