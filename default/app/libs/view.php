@@ -151,32 +151,33 @@ class View extends KumbiaView
         // Guarda el controlador actual
         self::$_controller = $controller;
 
-        self::$_content = ob_get_clean();
+        $file = self::$_path . self::$_view;
+        if (is_file(APP_PATH . 'views/' . ltrim($file, '/') . '.twig')) {
+            //si existe el archivo .twig iniciamos la lib Twig y renderizamos la vista
+            self::$_content = ob_get_clean();
 
-        if (!self::$_view) {
-            echo ob_end_flush();
-        }
+            Twig_Autoloader::register();
 
-        Twig_Autoloader::register();
+            $loader = new Twig_Loader_Filesystem(array());
 
-        $loader = new Twig_Loader_Filesystem(array());
+            $loader->addPath(APP_PATH . 'views/_shared/templates', 'templates');
+            $loader->addPath(APP_PATH . 'views/_shared/partials', 'partials');
+            $loader->addPath(APP_PATH . 'views/_shared/scaffolds', 'scaffolds');
+            $loader->addPath(APP_PATH . 'views');
 
-        $loader->addPath(APP_PATH . 'views/_shared/templates', 'templates');
-        $loader->addPath(APP_PATH . 'views/_shared/partials', 'partials');
-        $loader->addPath(APP_PATH . 'views/_shared/scaffolds', 'scaffolds');
-        $loader->addPath(APP_PATH . 'views');
+            $twig = new Twig_Environment($loader, array(
+                'cache' => APP_PATH . 'temp/cache/twig',
+                'debug' => !PRODUCTION,
+            ));
 
-        $twig = new Twig_Environment($loader, array(
-            'cache' => APP_PATH . 'temp/cache/twig',
-            'debug' => !PRODUCTION,
-        ));
+            $twig->addExtension(new Twig_Extension_Debug());
+            $twig->addExtension(new DwTwigExtension());
+            $twig->addExtension(new TwigExtension());
 
-        $twig->addExtension(new Twig_Extension_Debug());
-        $twig->addExtension(new DwTwigExtension());
-        $twig->addExtension(new TwigExtension());
-
-        if (self::$_view) {
-            $twig->display(self::$_path . self::$_view . '.twig', self::getVar());
+            $twig->display($file . '.twig', self::getVar());
+        } else {
+            //si no se encuentra el archivo .twig carga el render del fw
+            return parent::render($controller, $_url);
         }
     }
 
