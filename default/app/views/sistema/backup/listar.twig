@@ -37,8 +37,8 @@
                         <td>{{ item.tamano }}</td>
                         <td>{{ item.archivo }}</td>
                         <td>
-                            {{ html_buttonTable('Restarurar sistema', "sistema/backup/restaurar/$key_res/", {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}, 'danger', 'warning-sign') }}
-                            {{ html_buttonTable('Descargar backup', "sistema/backup/descargar/$key_dwn/", {'class':'no-ajax', 'target':'_blank'}, 'info', 'download-alt') }}
+                            {{ html_buttonTable('Restarurar sistema', "sistema/backup/restaurar/#{key_res}/", {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}, 'danger', 'warning-sign') }}
+                            {{ html_buttonTable('Descargar backup', "sistema/backup/descargar/#{key_dwn}/", {'class':'no-ajax', 'target':'_blank'}, 'info', 'download-alt') }}
                         </td>
                     </tr>
                 {% endfor %}
