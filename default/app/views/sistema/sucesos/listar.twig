@@ -1,0 +1,39 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block content %}
+    <div class="dw-overflow">
+        <table class="table table-bordered table-hover table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th class="no-responsive dw-text-middle" style="width: 15px;">NUM</th>
+                    <th class="no-responsive dw-text-middle">FECHA</th>
+                    <th class="no-responsive col-collapse dw-text-middle">TIPO</th>
+                    <th class="no-responsive dw-text-center">DESCRIPCION</th>
+                </tr>
+            </thead>
+            <tbody>
+                    {% for log in loggers.items %}
+                    <tr>
+                        <td></td>
+                        <td>{{ log.fecha }}</td>
+                        <td>
+                            {% if log.tipo in ['ERROR','ALERT'] %}
+                                <span class="label label-important">{{ log.tipo }}</span>
+                            {% elseif log.tipo in ['WARNING','CRITICAL','EMERGENCE'] %}
+                                <span class="label label-warning">{{ log.tipo }}</span>
+                            {% elseif log.tipo in ['NOTICE','INFO'] %}
+                                <span class="label label-info">{{ log.tipo }}</span>
+                            {% else %}
+                                <span class="label">{{ log.tipo }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ log.descripcion }}</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+{{ macros.paginator(loggers, "sistema/sucesos/listar/#{fecha}/") }}
+{% endblock content %}
