@@ -1,6 +1,4 @@
-<div class="page-header">
-   <h4>{% block page_module page_module %} |<small> {% block page_title page_title %}</small></h4>
-</div>
-{% include "@partials/dw_message.twig" %}
+{% import 'macros.twig' as macros %}
+{{ macros.page_header(page_module,page_title) }}
 {% block content null %}
 {% block javascript null %}

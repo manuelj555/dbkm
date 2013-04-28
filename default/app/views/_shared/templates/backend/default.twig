@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html>{% import 'macros.twig' as macros %}
 <html lang="es">
     <head>
         <title>{% block head_title page_title %}
@@ -34,10 +34,8 @@
             <div id="dw-console" class="container"></div>
             <div id="dw-shell-content" class="container-fluid">
                 <noscript><h5 style="text-align: center;">¡Tu navegador no soporta Javascript!.. Activa el uso de Javascript en tu navegador.</h5><meta http-equiv="refresh" content="1; URL={{  PUBLIC_PATH }}sistema/login/salir/no-script/" /></noscript>
-                <div class="page-header">
-                    <h4>{% block page_module page_module %} |<small> {% block page_title page_title %}</small></h4>
-                </div>
-                {% include "@partials/dw_message.twig" %}
+                {% block page_header %}{{ macros.page_header(page_module, page_title) }}{% endblock page_header %}
+                {{ macros.messages() }}
                 <div class="container-fluid dw-shell-view">
                     {% block content %}
                     {% endblock content %}

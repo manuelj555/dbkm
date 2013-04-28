@@ -1,7 +1,5 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
-{% import 'macros.twig' as macros %}
-
 {% block javascript %}
 {{ parent() }}
 {{ macros.dwGrid(null, "sistema/menu/listar/") }}

@@ -1,7 +1,5 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
-{% import 'macros.twig' as macros %}
-
 {% block content %}
     {{ form_open('', 'post', {id:'form',class:'dw-validate'}) }}
         <div class="row-fluid">
