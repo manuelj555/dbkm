@@ -25,9 +25,9 @@
             </thead>
             <tbody>
                 {% for item in backups.items %}
-                    {% set key_res = DwSecurity_getKey(backup.id, 'restaurar_backup') %}
-                    {% set key_dwn = DwSecurity_getKey(backup.id, 'descargar_backup') %}
-                    <tr data-backup-description="{{ backup.denominacion }}" data-backup-file="{{ backup.archivo }}" data-backup-datetime="{{ backup.registrado_at }}">
+                    {% set key_res = DwSecurity_getKey(item.id, 'restaurar_backup') %}
+                    {% set key_dwn = DwSecurity_getKey(item.id, 'descargar_backup') %}
+                    <tr data-backup-description="{{ item.denominacion }}" data-backup-file="{{ item.archivo }}" data-backup-datetime="{{ item.registrado_at }}">
                         <td>{{ backups.counter }}</td>
                         <td>{{ item.registrado_at|date("Y-m-d") }}</td>
                         <td>{{ item.registrado_at|date("H:i:s") }}</td>
