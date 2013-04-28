@@ -17,3 +17,15 @@
     });
 </script>
 {% endmacro %}
+
+{% macro page_header(page_module, page_title) %}
+<div class="page-header">
+    <h4>{{ page_module }}{% if page_title %} |<small> {{ page_title }}</small>{% endif %}</h4>
+</div>
+{% endmacro %}
+
+{% macro messages(id) %}
+<div id="{{ id|default('dw-message') }}" class="dw-message">
+    {{ View_content() }}    
+</div>
+{% endmacro %}
