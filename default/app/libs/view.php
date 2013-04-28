@@ -94,8 +94,7 @@ class View extends KumbiaView
      */
     public static function ajax()
     {
-        self::$_path = '_shared/errors/';
-        self::select('dw_ajax', null);
+        self::getTwig()->render('@partials/dw_message.twig');
         return false;
     }
 
@@ -156,6 +155,17 @@ class View extends KumbiaView
             //si existe el archivo .twig iniciamos la lib Twig y renderizamos la vista
             self::$_content = ob_get_clean();
 
+            self::getTwig()->display($file . '.twig', self::getVar());
+        } else {
+            //si no se encuentra el archivo .twig carga el render del fw
+            return parent::render($controller, $_url);
+        }
+    }
+
+    public static function getTwig()
+    {
+        static $twig;
+        if (!$twig) {
             Twig_Autoloader::register();
 
             $loader = new Twig_Loader_Filesystem(array());
@@ -163,6 +173,7 @@ class View extends KumbiaView
             $loader->addPath(APP_PATH . 'views/_shared/templates', 'templates');
             $loader->addPath(APP_PATH . 'views/_shared/partials', 'partials');
             $loader->addPath(APP_PATH . 'views/_shared/scaffolds', 'scaffolds');
+            $loader->addPath(APP_PATH . 'views/_shared/errors', 'errors');
             $loader->addPath(APP_PATH . 'views');
 
             $twig = new Twig_Environment($loader, array(
@@ -173,12 +184,8 @@ class View extends KumbiaView
             $twig->addExtension(new Twig_Extension_Debug());
             $twig->addExtension(new DwTwigExtension());
             $twig->addExtension(new TwigExtension());
-
-            $twig->display($file . '.twig', self::getVar());
-        } else {
-            //si no se encuentra el archivo .twig carga el render del fw
-            return parent::render($controller, $_url);
         }
+        return $twig;
     }
 
 }
