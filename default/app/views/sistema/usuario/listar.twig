@@ -1,0 +1,61 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block javascript %}
+{{ parent() }}
+{{ macros.dwGrid('sistema/usuario/buscar/', "sistema/recurso/listar/") }}
+{% endblock javascript %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/usuario/agregar/", 'agregar', {'class':'btn-success'}, 'check', constant('APP_AJAX'))}}
+        </div>
+    </div>
+    <div class="dw-overflow" id="data-result">
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="login">LOGIN</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="apellido">APELLIDO</th>
+                    <th class="col-collapse" data-search="email">EMAIL</th>
+                    <th class="col-collapse" data-search="perfil">PERFIL</th>
+                    <?if(APP_OFFICE) { //Si está activa la opción de oficinas ?>
+                    <th class="col-collapse" data-search="sucursal">SUCURSAL</th>
+                    <? } ?>
+                    <th class="col-collapse" data-search="estado_usuario">ESTADO</th>
+                    <th class="btn-actions no-responsive" style="width: 150px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for usuario in usuarios.items %}
+                    <tr>
+                        <td>{{ usuarios.counter }}</td>
+                        <td>{{ usuario.login}}</td>
+                        <td>{{ usuario.nombre}}</td>
+                        <td>{{ usuario.apellido}}</td>
+                        <td>{{ usuario.email}}</td>
+                        <td>{{ usuario.perfil}}</td>
+                        {% if constant('APP_OFFICE') %}{#Si está activa la opción de oficinas#}
+                        <td>{{ usuario.sucursal ?: 'Todas' }}</td>
+                        {% endif %}
+                        <td>{% if usuario.estado_usuario == constant('EstadoUsuario::ACTIVO') %}
+                            <span class="label label-success" title="{{ usuario.descripcion }}" rel="tooltip">Activo</span>
+                            {% else %}<span class="label label-important" title="{{ usuario.descripcion }}" rel="tooltip">Bloqueado</span>{% endif %}</td>
+                        <td>
+                            {{ html_buttonTable('Ver usuario', "sistema/usuario/ver/#{security_key(usuario.id, 'shw_usuario')}/", NULL, 'warning', 'search')}}
+                            {{ html_buttonTable('Modificar usuario', "sistema/usuario/editar/#{security_key(usuario.id, 'upd_usuario')}/", NULL, 'info', 'edit')}}
+                            {% if usuario.estado_usuario == constant('EstadoUsuario::ACTIVO') %}
+                                {{ html_buttonTable('Bloquear usuario', "sistema/usuario/estado/bloquear/#{security_key(usuario.id, 'bloquear_usuario')}/", NULL, 'success', 'flag')}}
+                            {% else %}
+                                {{ html_buttonTable('Reactivar usuario', "sistema/usuario/estado/reactivar/#{security_key(usuario.id, 'reactivar_usuario')}/", NULL, 'danger', 'flag')}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{{ macros.paginator(usuarios, "sistema/usuario/listar/#{order}/") }}
+{% endblock content %}

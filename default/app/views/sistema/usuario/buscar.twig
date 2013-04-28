@@ -1,0 +1,63 @@
+{% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
+
+{% block javascript %}
+{{ parent() }}
+{{ macros.dwGrid('sistema/usuario/buscar/', "sistema/recurso/listar/") }}
+{% endblock javascript %}
+
+{% block content %}
+    <div class="btn-toolbar btn-toolbar-top">
+        <div class="btn-actions">
+            {{ html_button("sistema/usuario/agregar/", 'agregar', {'class':'btn-success'}, 'check', constant('APP_AJAX'))}}
+            {{ html_button("sistema/usuario/listar/", 'listar', {'class':'btn-warning'}, 'ok', constant('APP_AJAX'))}}
+        </div>
+    </div>
+
+    <div class="dw-overflow" id="data-result">
+
+        <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th>NUM</th>
+                    <th class="col-collapse" data-search="login">LOGIN</th>
+                    <th class="col-collapse" data-search="nombre">NOMBRE</th>
+                    <th class="col-collapse" data-search="apellido">APELLIDO</th>
+                    <th class="col-collapse" data-search="email">EMAIL</th>
+                    <th class="col-collapse" data-search="perfil">PERFIL</th>
+                    <?if(APP_OFFICE) { //Si está activa la opción de oficinas ?>
+                    <th class="col-collapse" data-search="sucursal">SUCURSAL</th>
+                    <? } ?>
+                    <th class="col-collapse" data-search="estado_usuario">ESTADO</th>
+                    <th class="btn-actions no-responsive" style="width: 100px;">ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if usuarios.items is defined %}
+                    {% for usuario in usuarios.items %}
+                        <tr>
+                            <td>{{ usuarios.counter }}</td>
+                            <td>{{ field == 'login' ? DwUtils_resaltar(value, usuario.login) : usuario.login }}</td>
+                            <td>{{ field == 'nombre' ? DwUtils_resaltar(value, usuario.nombre) : usuario.nombre }}</td>
+                            <td>{{ field == 'apellido' ? DwUtils_resaltar(value, usuario.apellido) : usuario.apellido }}</td>
+                            <td>{{ field == 'email' ? DwUtils_resaltar(value, usuario.email) : usuario.email }}</td>
+                            <td>{{ field == 'perfil' ? DwUtils_resaltar(value, usuario.perfil) : usuario.perfil }}</td>
+                            {% if constant('APP_OFFICE') %}
+                            <td>{{ usuario.sucursal ? ( value == 'todas' ? DwUtils_resaltar(value, 'Todas') : 'Todas') : DwUtils_resaltar(value, usuario.sucursal) }}</td>
+                            {% endif %}
+                            <td>{{ (usuario.estado_usuario == EstadoUsuario_ACTIVO) ? '<span class="label label-success">Activo</span>' : '<span class="label label-important">Bloqueado</span>' }}</td>
+                            <td>
+                                {{ html_buttonTable('Modificar usuario', "sistema/usuario/editar/#{security_key(usuario.id, 'upd_usuario')}/", null, 'info', 'edit')}}
+                                {% if usuario.estado_usuario == constant('EstadoUsuario::ACTIVO') %}
+                                    {{ html_buttonTable('Bloquear usuario', "sistema/usuario/estado/bloquear/#{security_key(usuario.id, 'bloquear_usuario')}/", null, 'success', 'flag')}}
+                                {% else %}
+                                    {{ html_buttonTable('Reactivar usuario', "sistema/usuario/estado/reactivar/#{security_key(usuario.id, 'reactivar_usuario')}/", null, 'danger', 'flag')}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+{{ macros.paginator(usuarios, "sistema/usuario/buscar/#{field}/#{value}/#{order}/") }}
+{% endblock content %}
