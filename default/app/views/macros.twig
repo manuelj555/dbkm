@@ -29,3 +29,21 @@
     {{ View_content() }}    
 </div>
 {% endmacro %}
+
+{% macro link(url, text, type, class, icon, attrs) %}
+<a rel="tooltip" href="{{ PUBLIC_PATH ~ url }}" class="btn btn-{{ type }} {{ button_class(class) }}"
+   data-original-title="{{text}}" {{ attrs|raw }}><i class="btn-icon-only icon-{{icon}}"></i></a>
+{% endmacro %}
+
+{% macro link_button(url, text, type, class, icon, attrs) %}
+<a  href="{{ PUBLIC_PATH ~ url }}" class="btn btn-{{ type }} {{ button_class(class) }}"
+  {{ attrs|raw }}><i class="btn-icon-only icon-{{icon}}"></i></a>
+{% endmacro %}
+
+{% macro link_edit(url, text) %}
+{{ _self.link(url, text, 'info', null, 'edit') }}
+{% endmacro %}
+
+{% macro link_delete(url, text) %}
+{{ _self.link(url, text, 'danger', 'js-confirm', 'ban-circle', Tag_getAttrs({'confirm-title':text, 'confirm-body':'Está seguro de eliminar este Elemento? <br />Recuerda que esta operación no se puede revertir.'})) }}
+{% endmacro %}

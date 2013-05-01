@@ -27,6 +27,7 @@ class DwTwigExtension extends Twig_Extension
             'menu' => new Twig_Function_Method($this, 'menu', array('is_safe' => $safe)),
             'user_*' => new Twig_Function_Method($this, 'user'),
             'current_url' => new Twig_Function_Method($this, 'currentUrl'),
+            'button_class' => new Twig_Function_Method($this, 'prepareButtonClass'),
             'security_key' => new Twig_Function_Function("DwSecurity::getKey", array('is_safe' => $safe)),
         );
     }
@@ -78,6 +79,31 @@ class DwTwigExtension extends Twig_Extension
             }
         }
         return trim($url, '/');
+    }
+
+    public function prepareButtonClass($class = '', $bold = false)
+    {
+        $class = " $class ";
+        if (APP_AJAX) {
+            if (!trim($class)) {
+                return 'dw-ajax dw-spinner';
+            } else {
+                if (false === stripos($class, ' no-ajax ')) {
+                    $class .= ' dw-ajax';
+                }
+                if (false === stripos($class, ' no-spinner ')) {
+                    $class .= ' dw-spinner';
+                }
+            }
+        }
+
+        if ($bold) {
+            if (false === stripos($class, ' dw-text-bold ')) {
+                $class .= ' dw-text-bold';
+            }
+        }
+
+        return trim($class);
     }
 
 }

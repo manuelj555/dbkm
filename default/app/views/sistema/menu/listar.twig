@@ -45,13 +45,13 @@
                                 <span class="label label-success">Activo</span>
                                 {% else %}<span class="label label-important">Bloqueado</span>{% endif %}</td>
                             <td>
-                                {{ html_buttonTable('Modificar menú', "sistema/menu/editar/#{security_key(menu.id,'upd_menu')}/", null, 'info', 'edit') }}
+                                {{ macros.link_edit("sistema/menu/editar/#{security_key(menu.id,'upd_menu')}/", 'Modificar menú') }}
                                 {% if menu.activo == constant('Menu::ACTIVO') %}
-                                    {{ html_buttonTable('Bloquear menú', "sistema/menu/estado/inactivar/#{security_key(menu.id,'inactivar_menu')}/", null, 'success', 'flag') }}
+                                    {{ macros.link("sistema/menu/estado/inactivar/#{security_key(menu.id,'inactivar_menu')}/", 'Bloquear menú', 'success',null, 'flag') }}
                                 {% else %}
-                                    {{ html_buttonTable('Reactivar menú', "sistema/menu/estado/reactivar/#{security_key(menu.id,'reactivar_menu')}/", null, 'danger', 'flag') }}
+                                    {{ macros.link("sistema/menu/estado/reactivar/#{security_key(menu.id,'reactivar_menu')}/", 'Reactivar menú', 'danger',null, 'flag') }}
                                 {% endif %}
-                                {{ html_buttonTable('Eliminar menú', "sistema/menu/eliminar/#{security_key(menu.id,'eliminar_menu')}/", {'class':'js-confirm', 'confirm-title':'Eliminar menú', 'confirm-body':'Está seguro de eliminar este menú? <br />Recuerda que esta operación no se puede reversar.'}, 'danger', 'ban-circle') }}
+                                {{ macros.link_delete("sistema/menu/eliminar/#{security_key(menu.id,'eliminar_menu')}/", 'Eliminar menú') }}
                             </td>
                         </tr>
                     {% endif %}
