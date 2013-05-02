@@ -117,14 +117,14 @@ class DwTwigExtension extends Twig_Extension
         return trim($class);
     }
 
-    public function attrs($attrs, $unset)
+    public function attrs($attrs, $unset = null)
     {
         $string = '';
         $unset = (array) $unset;
 
         foreach ((array) $attrs as $attribute => $value) {
             if (!in_array($attribute, $unset)) {
-                $string .= $attribute . '="' . $value . '" ';
+                $string .= $attribute . '="' . (string) $value . '" ';
             }
         }
 
