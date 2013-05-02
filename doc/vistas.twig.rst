@@ -67,5 +67,72 @@ Devuelve una url con el PUBLIC_PATH delante, si se pasa true en el isAction, asu
         </body>
     </html>
 
+security_key(id, action='')
+-------------
+
+Crea una llave de seguridad para enviar como un parametro de la url, generalmente es usada para enviar id de registros encriptados.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <a href="{{ path("editar/" ~ security_key(id), true) }}" >Editar Registro {{ id }}</a>
+        </body>
+    </html>
+
+attrs(attrs, unset = null)
+-------------
+
+A partir de un arreglo con pares clave: valor, crea un string de la forma clave="valor" para ser usado generalmente como atributos de una etiqueta html, la variable unset se usa para pasar un arreglo de los indices a excluir en la creación del string, ejemplo:
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <a href="{{ path("inicio") }} {{ attrs({ id: 'link_inicio', title: 'Mi Pagina de Inicio' }) }}" >Inicio</a>
+            <a href="{{ path("contacto") }} class="contactos" {{ attrs({ class: 'mi_clase', title: 'Mi Pagina de Contacto' }) }}" >Inicio</a>
+        </body>
+    </html>
+
+button_class(attrs, bold = false)
+-------------
+
+Recibe un arreglo con los attrs y busca el indice class si existe, y Devuelve un string con las clases basicas usadas en el backend para los botones, las clases a devolver son:
+
+* dw-ajax: se devuelve si el arreglo contiene el indice class y dicho indice no tiene en su string la clase no-ajax.
+* dw-spinner: se devuelve si el arreglo contiene el indice class y dicho indice no tiene en su string la clase no-spinner.
+* dw-text-bold: se devuelve si se especifica el segundo parametro de la funcion a true.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <a href="{{ path("contacto") }} class="btn {{ button_class({{ class: 'no-ajax' }}, true) }}">Inicio</a>
+            Devuelve : 
+            <a href="/localhost/contacto" class="btn dw-spinner dw-text-bold">Inicio</a>
+        </body>
+    </html>
+
+current_url()
+-------------
+
+Devuelve la url actual completa con todo y parametros (menos el parametro pag.* de los paginadores).
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            Pagina Actual : {{ current_url() }}
+        </body>
+    </html>
+
 Macros
 ______
