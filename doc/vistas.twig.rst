@@ -137,7 +137,7 @@ Devuelve la url actual completa con todo y parametros (menos el parametro pag.* 
 Macros
 ______
 
-Las Macros son funciones creadas en un archivo.twig y se encuentra en app/views/macros.twig y se acceden a la misma en esta aplicación dentro de la variable dw.
+Las Macros son funciones creadas en un archivo.twig y se encuentra en **app/views/macros.twig** y se acceden a la misma en esta aplicación dentro de la variable dw.
 
 dw.paginator(page, url)
 -------------
@@ -225,4 +225,4 @@ Llama a la funcion View::content() del framework para mostrar los mensajes flash
         </body>
     </html>
 
-
+Para otros macros no documentados revisar el archivo **app/views/macros.twig**
