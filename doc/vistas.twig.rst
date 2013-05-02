@@ -139,7 +139,7 @@ ______
 
 Las Macros son funciones creadas en un archivo.twig y se encuentra en app/views/macros.twig y se acceden a la misma en esta aplicación dentro de la variable dw.
 
-de.paginator(page, url)
+dw.paginator(page, url)
 -------------
 
 Crea un paginador para un arreglo de registros especificados en page, con la url para los links pasada como segundo parametro.
@@ -156,7 +156,7 @@ Crea un paginador para un arreglo de registros especificados en page, con la url
         </body>
     </html>
 
-de.grid(form_action, order_action)
+dw.grid(form_action, order_action)
 -------------
 
 Crea el javascript usado para darle funcionalidad de la funcion javascript dwGrid a las tablas del backend.
@@ -172,6 +172,56 @@ Si el primer parametro es null, no se usa buscador.
             Listado
             ...
             {{ dw.grid('url_hacia_el_buscador', 'url_para_el_orden') }}
+        </body>
+    </html>
+
+dw.page_header(page_module, page_title)
+-------------
+
+Usado para crear los titulos de las paginas usando los estilos del bootstrap.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            {{ dw.page_header('Usuarios', 'Listado') }}
+            Devuelve:
+            <div class="page-header">
+                <h4>Usuarios |<small> Listado</small></h4>
+            </div>
+
+            {{ dw.page_header('Menus', 'Listado | Menus del Sistema') }}
+            Devuelve:
+            <div class="page-header">
+                <h4>Menus |<small> Listado</small></h4>
+            </div>
+
+            {{ dw.page_header('Auditorias') }}
+            Devuelve:
+            <div class="page-header">
+                <h4>Auditorias</h4>
+            </div>
+        </body>
+    </html>
+
+dw.messages(id)
+-------------
+
+Llama a la funcion View::content() del framework para mostrar los mensajes flash
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <header></header>
+            {{ dw.messages() }} devuelve <div id="dw-message" class="dw-message">{Los mensajes}</div>
+            <section>
+            </section>
+            <footer></footer>
         </body>
     </html>
 
