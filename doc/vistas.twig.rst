@@ -136,3 +136,43 @@ Devuelve la url actual completa con todo y parametros (menos el parametro pag.* 
 
 Macros
 ______
+
+Las Macros son funciones creadas en un archivo.twig y se encuentra en app/views/macros.twig y se acceden a la misma en esta aplicación dentro de la variable dw.
+
+de.paginator(page, url)
+-------------
+
+Crea un paginador para un arreglo de registros especificados en page, con la url para los links pasada como segundo parametro.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            Listado
+            ...
+            {{ dw.paginator(usuarios, 'sistema/usuarios/index') }}
+        </body>
+    </html>
+
+de.grid(form_action, order_action)
+-------------
+
+Crea el javascript usado para darle funcionalidad de la funcion javascript dwGrid a las tablas del backend.
+
+Si el primer parametro es null, no se usa buscador.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            Listado
+            ...
+            {{ dw.grid('url_hacia_el_buscador', 'url_para_el_orden') }}
+        </body>
+    </html>
+
+
