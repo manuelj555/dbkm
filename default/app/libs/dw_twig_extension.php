@@ -13,6 +13,11 @@
 class DwTwigExtension extends Twig_Extension
 {
 
+    public function initRuntime(Twig_Environment $twig)
+    {
+        $twig->addGlobal('dw', $twig->loadTemplate('macros.twig'));
+    }
+
     public function getName()
     {
         return 'dw_backend_extesion';
@@ -29,6 +34,7 @@ class DwTwigExtension extends Twig_Extension
             'current_url' => new Twig_Function_Method($this, 'currentUrl'),
             'button_class' => new Twig_Function_Method($this, 'prepareButtonClass'),
             'security_key' => new Twig_Function_Function("DwSecurity::getKey", array('is_safe' => $safe)),
+            'attrs' => new Twig_Function_Method($this, 'attrs', array('is_safe' => $safe)),
         );
     }
 
@@ -81,12 +87,17 @@ class DwTwigExtension extends Twig_Extension
         return trim($url, '/');
     }
 
-    public function prepareButtonClass($class = '', $bold = false)
+    public function prepareButtonClass($attrs, $bold = false)
     {
-        $class = " $class ";
+        if (isset($attrs['class'])) {
+            $class = " {$attrs['class']} "; //para poder buscar espacios a los lados
+        } else {
+            $class = '';
+        }
+
         if (APP_AJAX) {
             if (!trim($class)) {
-                return 'dw-ajax dw-spinner';
+                $class = 'dw-ajax dw-spinner';
             } else {
                 if (false === stripos($class, ' no-ajax ')) {
                     $class .= ' dw-ajax';
@@ -104,6 +115,20 @@ class DwTwigExtension extends Twig_Extension
         }
 
         return trim($class);
+    }
+
+    public function attrs($attrs, $unset)
+    {
+        $string = '';
+        $unset = (array) $unset;
+
+        foreach ((array) $attrs as $attribute => $value) {
+            if (!in_array($attribute, $unset)) {
+                $string .= $attribute . '="' . $value . '" ';
+            }
+        }
+
+        return $string;
     }
 
 }

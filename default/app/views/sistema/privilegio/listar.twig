@@ -2,7 +2,7 @@
 
 {% block javascript %}
 {{ parent() }}
-{{ macros.dwGrid(null, "sistema/privilegio/listar/") }}
+{{ dw.grid(null, "sistema/privilegio/listar/") }}
 {% endblock javascript %}
 
 {% set old_privilegios = [] %}
@@ -58,5 +58,5 @@
         </div>
 
     {{ form_close() }}
-{{ macros.paginator(recursos, "sistema/privilegio/listar/#{order}/") }}
+{{ dw.paginator(recursos, "sistema/privilegio/listar/#{order}/") }}
 {% endblock content %}

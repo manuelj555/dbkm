@@ -3,7 +3,7 @@
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
         <div class="btn-actions">
-            {{ html_button("sistema/backup/crear/", 'crear', {'class':'btn-success'}, 'check', constant('APP_AJAX')) }}
+            {{ dw.link_add("crear", 'CREAR') }}
         </div>
     </div>
 
@@ -38,8 +38,8 @@
                             <td>{{ item.tamano }}</td>
                             <td>{{ item.archivo }}</td>
                             <td>
-                                {{ html_buttonTable('Restarurar sistema', "sistema/backup/restaurar/#{key_res}/", {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}, 'danger', 'warning-sign') }}
-                                {{ html_buttonTable('Descargar backup', "sistema/backup/descargar/#{key_dwn}/", {'class':'no-ajax', 'target':'_blank'}, 'info', 'download-alt') }}
+                                {{ dw.link_action("restaurar/#{key_res}/", 'Restarurar Sistema', 'danger', 'warning-sign', {'class':'js-confirm', 'confirm-title':'Restaurar sistema', 'confirm-body':'Está seguro de querer restaurar el sistema con esta copia de seguridad?', 'on-confirm':'backupRestore'}) }}
+                                {{ dw.link_action("descargar/#{key_dwn}/", 'Descargar Backup', 'info', 'download-alt', {'class':'no-ajax', 'target':'_blank'}) }}
                             </td>
                         </tr>
                     {% endfor %}
@@ -49,10 +49,8 @@
 
     </div>
 {% block paginator %}
-{{ macros.paginator(backups, "sistema/backup/listar/#{order}/") }}
+{{ dw.paginator(backups, "sistema/backup/listar/#{order}/") }}
 {% endblock paginator %}
-</div>
-
     <div class="modal hide" id="form-add-bakcup">
         {{ form_open("", '', {'id':'form-modal', 'class':'dw-validate js-remote', 'data-to':'dw-message'}) }}
             <div class="modal-header">
@@ -79,7 +77,7 @@
 {% block javascript %}
 {{ parent() }}
 {% block dw_grid %}
-{{ macros.dwGrid('sistema/backup/buscar/', "sistema/backup/listar/") }}
+{{ dw.grid('sistema/backup/buscar/', "sistema/backup/listar/") }}
 {% endblock dw_grid %}
 <script type="text/javascript">
     function backupRestore(refer) {

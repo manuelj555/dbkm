@@ -40,9 +40,7 @@
                     </tr>
                 {% endfor %}
             </tbody>
-
         </table>
-
     </div>
-{% include "@partials/paginators/default.twig" with {page: audits, url: "sistema/auditoria/listar/#{fecha}/"} %}
+{{ dw.paginator(audits, "sistema/auditoria/listar/#{fecha}/") }}
 {% endblock content %}

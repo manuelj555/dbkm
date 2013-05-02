@@ -1,4 +1,4 @@
-<!DOCTYPE html>{% import 'macros.twig' as macros %}
+<!DOCTYPE html>
 <html lang="es">
     <head>
         <title>{{ page_title }}</title>
@@ -30,7 +30,7 @@
         <div id="dw-shell-load">
             <div id="dw-console"></div>
             <div id="dw-shell-content" class="container-fluid">
-                {{ macros.messages() }}
+                {{ dw.messages() }}
                 {% block content %}
                 {% endblock content %}
             </div>

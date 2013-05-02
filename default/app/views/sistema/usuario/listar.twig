@@ -2,7 +2,7 @@
 
 {% block javascript %}
 {{ parent() }}
-{{ macros.dwGrid('sistema/usuario/buscar/', "sistema/recurso/listar/") }}
+{{ dw.grid('sistema/usuario/buscar/', "sistema/recurso/listar/") }}
 {% endblock javascript %}
 
 {% block content %}
@@ -57,5 +57,5 @@
             </tbody>
         </table>
     </div>
-{{ macros.paginator(usuarios, "sistema/usuario/listar/#{order}/") }}
+{{ dw.paginator(usuarios, "sistema/usuario/listar/#{order}/") }}
 {% endblock content %}

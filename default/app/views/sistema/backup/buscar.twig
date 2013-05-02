@@ -1,9 +1,9 @@
 {% extends "sistema/backup/listar.twig" %}
     
 {% block dw_grid %}
-{{ macros.dwGrid('sistema/backup/buscar/',"sistema/backup/buscar/#{field}/#{value}/") }}
+{{ dw.grid('sistema/backup/buscar/',"sistema/backup/buscar/#{field}/#{value}/") }}
 {% endblock dw_grid %}
 
 {% block paginator %}
-{{ macros.paginator(backups, "sistema/backup/listar/#{field}/#{value}/#{order}/") }}
+{{ dw.paginator(backups, "sistema/backup/listar/#{field}/#{value}/#{order}/") }}
 {% endblock paginator %}

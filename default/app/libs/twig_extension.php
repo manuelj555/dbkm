@@ -39,7 +39,7 @@ class TwigExtension extends Twig_Extension
 
     public function getFunctions()
     {
-        return array(            
+        return array(
             new Twig_SimpleFunction('*_*', array($this, 'callHelper'), array(
                 'is_safe' => array('html'),
                     )),
@@ -48,6 +48,9 @@ class TwigExtension extends Twig_Extension
                 'is_safe' => array('html'),
                     )),
             new Twig_SimpleFunction('js', array($this, 'js'), array(
+                'is_safe' => array('html'),
+                    )),
+            new Twig_SimpleFunction('path', array($this, 'path'), array(
                 'is_safe' => array('html'),
                     )),
         );
@@ -90,5 +93,14 @@ class TwigExtension extends Twig_Extension
 
         return '<script type="text/javascript" src="' . PUBLIC_PATH . $src . '"></script>';
     }
-    
+
+    public function path($path, $isAction = false)
+    {
+        if ($isAction) {
+            return PUBLIC_PATH . Router::get('controller_path') . '/' . $path;
+        } else {
+            return PUBLIC_PATH . $path;
+        }
+    }
+
 }

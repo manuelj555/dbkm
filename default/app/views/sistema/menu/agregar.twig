@@ -31,9 +31,9 @@
         </div>
         <div class="row-fluid">
             <div class="form-actions">
-                {{ DwButton_save('Guardar menú') }}
-                {{ DwButton_reset('form') }}
-                {{ DwButton_cancel('sistema/menu/listar/') }}
+                {{ dw.submit() }}
+                {{ dw.reset() }}
+                {{ dw.link_cancel('sistema/menu/listar/') }}
             </div>
         </div>
         {% block extra_fields '' %}

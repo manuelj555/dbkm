@@ -2,7 +2,7 @@
 
 {% block javascript %}
 {{ parent() }}
-{{ macros.dwGrid(null, "sistema/perfil/ver/#{key}/") }}
+{{ dw.grid(null, "sistema/perfil/ver/#{key}/") }}
 {% endblock javascript %}
 
 {% block content %}
@@ -16,7 +16,7 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab1">
-                {{ macros.page_header(page_title) }}
+                {{ dw.page_header(page_title) }}
                 {{ form_open() }}
                     <div class="row-fluid">
                         <div class="span4">
@@ -32,7 +32,7 @@
                 {{ form_close() }}
             </div>
             <div class="tab-pane" id="tab2">
-                {{ macros.page_header('Información de usuarios') }}
+                {{ dw.page_header('Información de usuarios') }}
                 <table class="table table-bordered table-hover table-striped table-condensed table-responsive">
                     <thead>
                         <tr>
@@ -59,7 +59,7 @@
                         {% endfor %}
                     </tbody>
                 </table>
-                {{ macros.paginator(usuarios,"sistema/perfil/ver/#{key}/#{order}/") }}
+                {{ dw.paginator(usuarios,"sistema/perfil/ver/#{key}/#{order}/") }}
             </div>
         </div>
     <div class="row-fluid">

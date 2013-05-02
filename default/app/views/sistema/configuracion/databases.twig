@@ -1,6 +1,6 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
-{% import 'sistema/configuracion/macros.twig' as config_macros %}
+{% import 'sistema/configuracion/dw.twig' as config_macros %}
 
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
@@ -59,7 +59,7 @@
 {{ parent() }}
 <script type="text/javascript">
     $(function(){
-        {{ config_macros.js_modal() }}
+        {{ config_dw.js_modal() }}
     });
     $("#btn-test").on('click', function () {
         var form = $("#form");

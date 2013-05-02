@@ -1,6 +1,6 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
-{% import 'sistema/configuracion/macros.twig' as config_macros %}
+{% import 'sistema/configuracion/dw.twig' as config_macros %}
 
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
@@ -37,7 +37,7 @@
                 {{ form_fieldset("<a id='add-config' href='#form-add-config' class='btn' data-toggle='modal'><i class='icon-ok icon-expand'></i>Agregar parámetro</a>")}}
                 {% if config.custom is defined %}
                     {% for campo, valor in config.custom %}
-                        {{ config_macros.customConfig(valor, campo) }}
+                        {{ config_dw.customConfig(valor, campo) }}
                     {% endfor %}
                 {% endif %}
                 <div id="append-config"></div>
@@ -64,7 +64,7 @@
 {{ parent() }}
 <script type="text/javascript">
     $(function(){
-        {{ config_macros.js_modal() }}
+        {{ config_dw.js_modal() }}
     });
 </script>
 <!-- Imprimimos el modal justo antes del Body -->

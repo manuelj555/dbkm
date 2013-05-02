@@ -2,17 +2,17 @@
     {% include "@partials/paginators/default.twig" with {page: page, url: url|default(null)} %}
 {% endmacro %}
 
-{% macro dwGrid(form_action, order_action) %}
+{% macro grid(form_action, order_action) %}
 <script type="text/javascript">
     $(function() {
         $('table').dwGrid({
             {% if form_action %}
                 form_search: true,
-                form_action: '{{ PUBLIC_PATH ~ form_action }}',
+                form_action: '{{ path(form_action) }}',
                 form_load_data : 'dw-shell-content',
             {% endif %}
             order_attr: "{{ constant('APP_AJAX')?'class=\'dw-ajax dw-spinner\'':null}}",
-            order_action: '{{ PUBLIC_PATH ~ order_action }}'
+            order_action: '{{ path(order_action) }}'
         });
     });
 </script>
@@ -30,20 +30,60 @@
 </div>
 {% endmacro %}
 
-{% macro link(url, text, type, class, icon, attrs) %}
-<a rel="tooltip" href="{{ PUBLIC_PATH ~ url }}" class="btn btn-{{ type }} {{ button_class(class) }}"
-   data-original-title="{{text}}" {{ attrs|raw }}><i class="btn-icon-only icon-{{icon}}"></i></a>
+{############################ LINKS ##########################}
+{% macro link(url, text, type, icon, attrs) %}
+<a rel="tooltip" href="{{ path(url) }}" class="btn btn-{{ type }} {{ button_class(attrs) }}"
+   data-original-title="{{text}}" {{ attrs(attrs, ['class','href','data-original-title']) }}><i class="btn-icon-only icon-{{icon}}"></i></a>
 {% endmacro %}
 
-{% macro link_button(url, text, type, class, icon, attrs) %}
-<a  href="{{ PUBLIC_PATH ~ url }}" class="btn btn-{{ type }} {{ button_class(class) }}"
-  {{ attrs|raw }}><i class="btn-icon-only icon-{{icon}}"></i></a>
+{% macro link_action(action, text, type, icon, attrs) %}
+<a rel="tooltip" href="{{ path(action, true) }}" class="btn btn-{{ type }} {{ button_class(attrs) }}"
+   data-original-title="{{text}}" {{ attrs(attrs, ['class','href','data-original-title']) }}><i class="btn-icon-only icon-{{icon}}"></i></a>
 {% endmacro %}
 
-{% macro link_edit(url, text) %}
-{{ _self.link(url, text, 'info', null, 'edit') }}
+{% macro link_button(url, text, type, icon, attrs) %}
+<a  href="{{ path(url) }}" class="btn btn-{{ type }} {{ button_class(attrs, true) }}"
+  {{ attrs(attrs, ['class','href']) }}>{% if icon %}<i class="btn-icon-only icon-{{icon}}"></i> {% endif %}{{ text }}</a>
 {% endmacro %}
 
-{% macro link_delete(url, text) %}
-{{ _self.link(url, text, 'danger', 'js-confirm', 'ban-circle', Tag_getAttrs({'confirm-title':text, 'confirm-body':'Está seguro de eliminar este Elemento? <br />Recuerda que esta operación no se puede revertir.'})) }}
+{% macro link_button_action(action, text, type, icon, attrs) %}
+<a  href="{{ path(action, true) }}" class="btn btn-{{ type }} {{ button_class(attrs, true) }}"
+  {{ attrs(attrs, ['class','href']) }}>{% if icon %}<i class="btn-icon-only icon-{{icon}}"></i> {% endif %}{{ text }}</a>
+{% endmacro %}
+
+{% macro link_edit(action, text) %}
+{% import _self as this %}
+{{ this.link_action(action, text, 'info', 'edit') }}
+{% endmacro %}
+
+{% macro link_delete(action, text) %}
+{% import _self as this %}
+{{ this.link_action(action, text, 'danger', 'ban-circle',{'confirm-title':text, 'confirm-body':'Está seguro de eliminar este Elemento? <br />Recuerda que esta operación no se puede revertir.', class : 'js-confirm'}) }}
+{% endmacro %}
+
+{% macro link_cancel(url, text) %}
+{% import _self as this %}
+{{ this.link_button(url, text|default('CANCELAR'), 'danger', 'ban-circle') }}
+{% endmacro %}
+
+{% macro link_add(action, text) %}
+{% import _self as this %}
+{{ this.link_button_action(action, text, 'success', 'check') }}
+{% endmacro %}
+
+{############################ BOTONES ##########################}
+
+{% macro button(text, btn_class, icon, attrs, type) %}
+<button type="{{ type|default('button') }}" {{ attrs(attrs, ['class','type']) }} class="btn btn-{{ btn_class }} {{ button_class(attrs, true) }}">
+{% if icon %}<i class="btn-icon-only icon-{{icon}}"></i> {% endif %}{{ text|upper }}</button>
+{% endmacro %}
+
+{% macro submit(text, icon, attrs) %}
+{% import _self as this %}
+{{ this.button(text|default('GUARDAR'), 'success', icon|default('save'), attrs|default({class : 'no-ajax'}), 'submit') }}
+{% endmacro %}
+
+{% macro reset(text, icon, attrs) %}
+{% import _self as this %}
+{{ this.button(text|default('LIMPIAR'), 'info', icon|default('undo'), attrs, 'reset') }}
 {% endmacro %}

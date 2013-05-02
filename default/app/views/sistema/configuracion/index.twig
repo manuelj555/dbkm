@@ -1,6 +1,6 @@
 {% extends not is_ajax ? "@templates/backend/default.twig" : "@templates/ajax.twig" %}
 
-{% import 'sistema/configuracion/macros.twig' as config_macros %}
+{% import 'sistema/configuracion/dw.twig' as config_macros %}
 
 {% block content %}
     <div class="btn-toolbar btn-toolbar-top">
@@ -45,7 +45,7 @@
                 {% if config.custom is defined %}
                     {% for campo, valor in config.custom %}
                         {% if campo not in ['app_logger','app_oficce','pag_main','pag_med','pag_max','pag_ext'] %}
-                            {{ config_macros.customConfig(valor, campo) }}
+                            {{ config_dw.customConfig(valor, campo) }}
                         {% endif %}
                     {% endfor %}
                 {% endif %}

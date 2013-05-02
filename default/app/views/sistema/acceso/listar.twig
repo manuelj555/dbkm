@@ -35,21 +35,10 @@
                 {% endif %}
             </tbody>
         </table>
-
     </div>
-    {% include "@partials/paginators/default.twig" with {page: accesos, url: paginator_url} %}
+    {{ dw.paginator(accesos, paginator_url) }}
 {% endblock content %}
 {% block javascript %}
 {{ parent() }}
-<script type="text/javascript">
-    $(function() {
-        $('table').dwGrid({
-            form_search: true,
-            form_action: '{{ PUBLIC_PATH }}sistema/acceso/buscar/',
-            form_load_data : 'dw-shell-content',
-            order_attr: '{{ constant('APP_AJAX') ? 'class="dw-ajax dw-spinner"' : '' }}',
-            order_action: "{{ PUBLIC_PATH ~ grid_order_url }}"
-        });
-    });
-</script>
+{{ dw.grid('sistema/acceso/buscar/', grid_order_url) }}
 {% endblock javascript %}
