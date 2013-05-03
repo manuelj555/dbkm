@@ -35,6 +35,7 @@ class DwTwigExtension extends Twig_Extension
             'button_class' => new Twig_Function_Method($this, 'prepareButtonClass'),
             'security_key' => new Twig_Function_Function("DwSecurity::getKey", array('is_safe' => $safe)),
             'attrs' => new Twig_Function_Method($this, 'attrs', array('is_safe' => $safe)),
+            'attrs_report' => new Twig_Function_Method($this, 'attrsReport', array('is_safe' => $safe)),
         );
     }
 
@@ -129,6 +130,16 @@ class DwTwigExtension extends Twig_Extension
         }
 
         return $string;
+    }
+
+    public function attrsReport($files = 'html', $attrs = array(), $unset = null)
+    {
+        $files = array_intersect(explode(' ', $files), array('ticket', 'html', 'pdf', 'xls', 'xlsx', 'doc', 'docx', 'xml', 'csv'));
+
+        $attrs['data-report-format'] = join('|', $files);
+        $attrs['data-report-title'] = isset($attr['title']) ? $attr['title'] : 'Imprimir Reporte';
+
+        return $attrs;
     }
 
 }

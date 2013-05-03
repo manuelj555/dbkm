@@ -71,6 +71,12 @@
 {{ this.link_button_action(action, text, 'success', 'check') }}
 {% endmacro %}
 
+{% macro link_report(url, text, title, files, attrs) %}
+{% import _self as this %}
+{{ this.link_button('reportes/'~url, text|upper, 'info js-report no-load', 'print', 
+    attrs_report(files|default('html'), attrs|default({})|merge({title: title}))) }}
+{% endmacro %}
+
 {############################ BOTONES ##########################}
 
 {% macro button(text, btn_class, icon, attrs, type) %}
