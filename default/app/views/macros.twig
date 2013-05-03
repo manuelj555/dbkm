@@ -63,7 +63,7 @@
 
 {% macro link_cancel(url, text) %}
 {% import _self as this %}
-{{ this.link_button(url, text|default('CANCELAR'), 'danger', 'ban-circle') }}
+{{ this.link_button(url, 'CANCELAR', 'danger'~(url is empty?' btn-back':null), 'ban-circle',{title:text|default('Cancelar Operación')}) }}
 {% endmacro %}
 
 {% macro link_add(action, text) %}
@@ -86,10 +86,10 @@
 
 {% macro submit(text, icon, attrs) %}
 {% import _self as this %}
-{{ this.button(text|default('GUARDAR'), 'success', icon|default('save'), attrs|default({class : 'no-ajax'}), 'submit') }}
+{{ this.button('GUARDAR', 'success', icon|default('save'), attrs|default({})|merge({class:'no-ajax',title:text|default('Guardar')}), 'submit') }}
 {% endmacro %}
 
 {% macro reset(text, icon, attrs) %}
 {% import _self as this %}
-{{ this.button(text|default('LIMPIAR'), 'info', icon|default('undo'), attrs, 'reset') }}
+{{ this.button('LIMPIAR', 'info', icon|default('undo'), attrs|default({title:text|default('Limpiar Formulario')}), 'reset') }}
 {% endmacro %}
