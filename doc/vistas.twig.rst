@@ -232,7 +232,7 @@ Crea una etiqueta <a> con los estilos de los botones del bootstrap y tooltip (**
 
 * **url**: una url como las de kumbiaphp (modulos/controlador/acción/parametros) 
 * **text**: el texto que será mostrado en el tooltip (**para mostrar texto aparte de solo el icono usar la macro dw.link_button()**).
-* **type**: el color del boton usando las clases del bootstrap pero son el prefio btn- (primary, success, info, warning, error, inerves, ...)
+* **type**: el color del boton usando las clases del bootstrap pero son el prefio btn- (primary, success, info, warning, error, inverse, ...)
 * **icon**: cualquier icono valido del bootstrap sin el prefio ico- ('save', 'delete', ...)
 * **attrs**: un arreglo con pares clave: valor para agregar atributos html adicionales al link
 
@@ -279,5 +279,57 @@ Exactamente igual que link pero muestra el texto en la etiqueta.
             <footer></footer>
         </body>
     </html>
+
+
+dw.link_action(action, text, type, icon, attrs)
+-------------
+
+Exactamente igual que link pero la ruta pasada será un acción del controlador actual en ejecución.
+
+dw.link_button_action(action, text, type, icon, attrs)
+-------------
+
+Exactamente igual que link_button pero la ruta pasada será un acción del controlador actual en ejecución.
+
+dw.link_edit(action, text)
+-------------
+
+Crea una etiqueta link usando la macro **dw.link_action()** para usar en un crud, y el boton será de tipo **btn-info** con el icono **icon-edit**
+
+dw.link_delete(action, text)
+-------------
+
+Crea una etiqueta link usando la macro **dw.link_action()** para usar en un crud, y el boton será de tipo **btn-danger** con el icono **icon-ban-circle** aparte por defecto muestra un dialogo preguntando si realmente se desea eliminar el registro en cuestión
+
+dw.link_add(action, text)
+-------------
+
+Crea una etiqueta link usando la macro **dw.link_button_action()** para usar en un crud, y el boton será de tipo **btn-success** con el icono **icon-check**
+
+dw.link_cancel(url, text)
+-------------
+
+Crea una etiqueta link usando la macro **dw.link_button()** para usar en un formulario, y el boton será de tipo **btn-danger** con el icono **icon-ban-circle**, el texto que muestra siempre es CANCELAR y el texto pasado como argumento se usa como title del link
+
+dw.button(text, btn_class, icon, attrs, type)
+-------------
+
+Crea una etiqueta <button> con los estilos para botones del bootstrap
+
+* **text**: texto a mostrar en el boton, siempre en mayusculas
+* **btn_class**: el color del boton usando las clases del bootstrap pero son el prefio btn- (primary, success, info, warning, error, inverse, ...)
+* **icon**: cualquier icono valido del bootstrap sin el prefio ico- ('save', 'delete', ...)
+* **attrs**: un arreglo con pares clave: valor para agregar atributos html adicionales al link
+* **type**: el type del boton (submit, reset ó button), por defecto button
+
+dw.submit(text, icon, attrs)
+-------------
+
+Crea una etiqueta <button> de tipo reset usando la clase btn-info y el icono btn-undo por defecto, el texto mostrado siempre es LIMPIAR y si se especifica un text se usa en el tooltip.
+
+dw.reset(text, icon, attrs)
+-------------
+
+Crea una etiqueta <button> de tipo submit usando la clase btn-success y el icono btn-save por defecto, el texto mostrado siempre es GUARDAR y si se especifica un text se usa en el tooltip.
 
 Para otros macros no documentados revisar el archivo **app/views/macros.twig**
