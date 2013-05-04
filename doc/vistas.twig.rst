@@ -228,11 +228,11 @@ Llama a la funcion View::content() del framework para mostrar los mensajes flash
 dw.link(url, text, type, icon, attrs)
 -------------
 
-Crea una etiqueta <a> con los estilos de los botones del bootstrap y tooltip, los atributos son:
+Crea una etiqueta <a> con los estilos de los botones del bootstrap y tooltip (**NO Muestra ningun texto**), los atributos son:
 
 * **url**: una url como las de kumbiaphp (modulos/controlador/acción/parametros) 
-* **text**: el texto que será mostrado en el link, y en el tooltip.
-* **type**: el color del boton usando las clases del bootstrap pero son el prefio btn- (success, info, warning, error, inerves, ...)
+* **text**: el texto que será mostrado en el tooltip (**para mostrar texto aparte de solo el icono usar la macro dw.link_button()**).
+* **type**: el color del boton usando las clases del bootstrap pero son el prefio btn- (primary, success, info, warning, error, inerves, ...)
 * **icon**: cualquier icono valido del bootstrap sin el prefio ico- ('save', 'delete', ...)
 * **attrs**: un arreglo con pares clave: valor para agregar atributos html adicionales al link
 
@@ -243,7 +243,37 @@ Crea una etiqueta <a> con los estilos de los botones del bootstrap y tooltip, lo
         </head>
         <body>
             <header></header>
-            {{ dw.messages() }} devuelve <div id="dw-message" class="dw-message">{Los mensajes}</div>
+            {{ dw.link('admin/perfil', 'Mi Perfil', 'primary') }}
+            devuelve
+            <a rel="tooltip" href="/localhost/proyecto/admin/perfil" class="btn btn-primary"
+               data-original-title="Mi Perfil" ><i class="btn-icon-only icon-"></i></a>
+            <section>
+            </section>
+            <footer></footer>
+        </body>
+    </html>
+
+dw.link_button(url, text, type, icon, attrs)
+-------------
+
+Exactamente igual que link pero muestra el texto en la etiqueta.
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <header></header>
+            {{ dw.link_button('admin/perfil', 'Mi Perfil', 'primary') }}
+            devuelve
+            <a rel="tooltip" href="/localhost/proyecto/admin/perfil" class="btn btn-primary"
+               data-original-title="Mi Perfil" >Mi Perfil</a>
+
+            {{ dw.link_button('admin/perfil', 'Guardar', 'primary', 'save') }}
+            devuelve
+            <a rel="tooltip" href="/localhost/proyecto/admin/perfil" class="btn btn-primary"
+               data-original-title="Guardar" ><i class="btn-icon-only icon-save"></i>Guardar</a>
             <section>
             </section>
             <footer></footer>
