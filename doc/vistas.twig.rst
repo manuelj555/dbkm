@@ -225,4 +225,29 @@ Llama a la funcion View::content() del framework para mostrar los mensajes flash
         </body>
     </html>
 
+dw.link(url, text, type, icon, attrs)
+-------------
+
+Crea una etiqueta <a> con los estilos de los botones del bootstrap y tooltip, los atributos son:
+
+* **url**: una url como las de kumbiaphp (modulos/controlador/acción/parametros) 
+* **text**: el texto que será mostrado en el link, y en el tooltip.
+* **type**: el color del boton usando las clases del bootstrap pero son el prefio btn- (success, info, warning, error, inerves, ...)
+* **icon**: cualquier icono valido del bootstrap sin el prefio ico- ('save', 'delete', ...)
+* **attrs**: un arreglo con pares clave: valor para agregar atributos html adicionales al link
+
+.. code-block:: jinja
+
+    <html>
+        <head>
+        </head>
+        <body>
+            <header></header>
+            {{ dw.messages() }} devuelve <div id="dw-message" class="dw-message">{Los mensajes}</div>
+            <section>
+            </section>
+            <footer></footer>
+        </body>
+    </html>
+
 Para otros macros no documentados revisar el archivo **app/views/macros.twig**
