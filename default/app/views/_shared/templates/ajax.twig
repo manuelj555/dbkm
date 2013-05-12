@@ -1,4 +1,6 @@
 {{ dw.page_header(page_module,page_title) }}
 {{ dw.messages() }}
 {% block content null %}
-{% block javascript null %}
+{% block javascript %}
+<script>DwTitle('{{ page_title }}')</script>
+{% endblock javascript %}
